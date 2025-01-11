@@ -16,4 +16,9 @@ class TVController extends Controller
         $tv = Televisor::query()->create();
         return response()->json(['device_id' => $tv->id]);
     }
+
+    public function getPlaylist(Televisor $televisor)
+    {
+        return response()->json(['ready' => true]);
+    }
 }
