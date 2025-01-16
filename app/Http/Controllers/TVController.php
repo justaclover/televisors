@@ -19,6 +19,6 @@ class TVController extends Controller
 
     public function getPlaylist(Televisor $televisor)
     {
-        return response()->json(['ready' => true]);
+        return response()->json(['ready' => false]);
     }
 }
