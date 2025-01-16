@@ -11,6 +11,6 @@ Route::get('/devices/{device}/playlist', [TVController::class, 'getPlaylist']);
 
 Route::inertia('/admin', 'AdminIndex');
 
-Route::post('/admin/videos', [AdminController::class, 'storeVideo']);
+Route::post('/admin/playlists/{playlist}', [AdminController::class, 'storeVideo']);
 
 Route::post('/admin/playlists', [AdminController::class, 'storePlaylist']);

@@ -4,15 +4,20 @@ import {computed, reactive} from 'vue'
 import { router } from '@inertiajs/vue3'
 
 function uploadVideo() {
-    const formData = new FormData(document.getElementById('videoForm'))
+    const formData = new FormData()
+    formData.append('video', document.getElementById('videoFile').files[0])
 
-    axios.post('</admin/>playlists', {
-        video: formData
-    })
-        .then(
-            document.getElementById('videoForm').reset(),
+    console.log(document.getElementById('videoFile').files[0])
+    const config = { headers: {'Content-Type': 'multipart/form-data' } }
+    axios.post('/admin/playlists/13', formData, config)
+        .then(response => {
+            console.log(response)
+            document.getElementById('videoForm').reset()
             router.reload()
-        )
+        })
+        .catch(e => {
+            console.log(e)
+        })
 }
 
 function addPlaylist() {
@@ -47,9 +52,9 @@ function addPlaylist() {
         <button type="submit">Добавить плейлист</button>
     </form>
 
-    <form id="videoForm">
-        <input type="file" placeholder="Загрузить видео">
-        <button type="submit" v-on:click="uploadVideo">Загрузить видео</button>
+    <form id="videoForm" @submit.prevent="uploadVideo">
+        <input type="file" placeholder="Загрузить видео" id="videoFile">
+        <button type="submit">Загрузить видео</button>
     </form>
 </template>
 
