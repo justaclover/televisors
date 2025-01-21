@@ -9,25 +9,16 @@ use Spatie\MediaLibrary\Conversions\Jobs\PerformConversionsJob;
 
 class AdminController extends Controller
 {
-    public function storeVideo(Request $request, Playlist $playlist) {
+    public function storeVideo(Request $request, Playlist $playlist)
+    {
         $playlist->addMediaFromRequest('video')->toMediaCollection('videos');
         //dispatch(new PerformConversionsJob(new ConversionCollection($playlist->mediaConversions), $playlist->getMedia('videos')->last()));
 
         return $playlist->mediaConversions;
     }
 
-    public function storePlaylist(Request $request) {
-        $playlist = Playlist::query()->create([
-            'name' => $request->name,
-            'comment' => $request->comment
-        ]);
+    public function storePlaylist(Request $request)
+    {
 
-        return response()->json([
-            'playlist' => [
-                'id' => $playlist->id,
-                'name' => $playlist->name,
-                'comment' => $playlist->comment,
-            ]
-        ]);
     }
 }

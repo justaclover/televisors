@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Televisor;
+use App\Models\Device;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,11 +13,11 @@ class TVController extends Controller
 {
     public function store()
     {
-        $tv = Televisor::query()->create();
+        $tv = Device::query()->create();
         return response()->json(['device_id' => $tv->id]);
     }
 
-    public function getPlaylist(Televisor $televisor)
+    public function getPlaylist(Device $televisor)
     {
         return response()->json(['ready' => false]);
     }

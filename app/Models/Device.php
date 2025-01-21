@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Televisor extends Model
+class Device extends Model
 {
     use SoftDeletes;
-    protected $fillable = [
-        'name',
-        'commentary'
-    ];
+    protected $table = "televisors";
+    protected $guarded = [];
 }
