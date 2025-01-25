@@ -20,11 +20,11 @@ class Playlist extends Model implements HasMedia
         'comment'
     ];
 
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->addMediaConversion('compress')
-            ->width(368)
-            ->height(232)
-            ->format('webm');
-    }
+//    public function registerMediaConversions(?Media $media = null): void
+//    {
+//        $this->addMediaConversion('compress')
+//            ->width(368)
+//            ->height(232)
+//            ->format('webm');
+//    }
 }

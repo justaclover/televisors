@@ -13,7 +13,7 @@ class PlaylistController extends Controller
      */
     public function index()
     {
-        return Inertia::render('AdminIndex', [
+        return Inertia::render('Playlist/PlaylistIndex', [
             'items' => Playlist::all()
         ]);
     }
@@ -57,8 +57,8 @@ class PlaylistController extends Controller
     public function show(Playlist $playlist)
     {
         return Inertia::render('Playlist/Show', [
-            'item' => $playlist,
-            'items' => $playlist->getMedia('*')
+            'playlist' => $playlist,
+            'videos' => $playlist->getMedia('*')
         ]);
     }
 

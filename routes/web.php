@@ -13,7 +13,8 @@ Route::get('/add-device', [TVController::class, 'store']);
 Route::get('/devices/{device}/playlist', [TVController::class, 'getPlaylist']);
 
 
-Route::get('/admin', fn() => Redirect::route('admin.playlist.index'));
+//Route::get('/admin', fn() => Redirect::route('admin.playlist.index'));
+Route::get('/admin', [AdminController::class, 'index']);
 
 Route::prefix('/admin')->name('admin.')->group(function () {
     Route::resource('playlist', PlaylistController::class);

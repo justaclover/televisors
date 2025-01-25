@@ -2,6 +2,8 @@ import './bootstrap';
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 createInertiaApp({
     resolve: name => {
@@ -12,6 +14,7 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(ElementPlus)
             .mount(el)
     },
 })

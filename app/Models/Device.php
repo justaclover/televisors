@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Device extends Model
 {
     use SoftDeletes;
-    protected $table = "televisors";
     protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'comment',
+        'location',
+        'playlist_id'
+    ];
 }
