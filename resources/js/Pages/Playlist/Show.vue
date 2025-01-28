@@ -1,5 +1,18 @@
+<script setup>
+import {Link} from "@inertiajs/vue3";
+import {Delete, Picture as IconPicture} from '@element-plus/icons-vue'
+import { router } from '@inertiajs/vue3'
+
+const props = defineProps({videos: Array, playlist: Object})
+
+</script>
+
 <template>
     <section class="flex gap-3 flex-col ml-32 pt-20">
+        <a :href="`/admin/playlist`" class="mb-10">
+            <el-button type="primary" round><- Назад</el-button>
+        </a>
+
         <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{{playlist.name}}</h2>
 
         <div class="mb-14">
@@ -28,35 +41,3 @@
     </section>
 </template>
 
-<script setup lang="ts">
-import {Link} from "@inertiajs/vue3";
-import {Delete, Picture as IconPicture} from '@element-plus/icons-vue'
-import { ref } from 'vue'
-import { genFileId } from "element-plus"
-import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
-import { router } from '@inertiajs/vue3'
-
-const props = defineProps({videos: Array, playlist: Object})
-
-const uploadRef = ref<UploadInstance>()
-
-
-
-// function uploadVideo() {
-
-// const formData = new FormData()
-// formData.append('video', document.getElementById('videoFile').files[0])
-//
-// console.log(document.getElementById('videoFile').files[0])
-// const config = { headers: {'Content-Type': 'multipart/form-data' } }
-// axios.post("`/admin/playlist/${playlist.id}`", formData, config)
-//     .then(response => {
-//         console.log(response)
-//         document.getElementById('videoForm').reset()
-//         router.reload()
-//     })
-//     .catch(e => {
-//         console.log(e)
-//     })
-// }
-</script>

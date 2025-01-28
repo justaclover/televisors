@@ -15,4 +15,9 @@ class Device extends Model
         'location',
         'playlist_id'
     ];
+
+    public function playlist()
+    {
+        return $this->hasOne(Playlist::class);
+    }
 }

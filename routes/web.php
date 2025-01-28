@@ -8,17 +8,21 @@ use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
+//Сторона устройства
+
 Route::inertia('/', 'Index');
 Route::get('/add-device', [TVController::class, 'store']);
 Route::get('/devices/{device}/playlist', [TVController::class, 'getPlaylist']);
 
 
-//Route::get('/admin', fn() => Redirect::route('admin.playlist.index'));
+
+//Сторона админки
 Route::get('/admin', [AdminController::class, 'index']);
 
 Route::prefix('/admin')->name('admin.')->group(function () {
     Route::resource('playlist', PlaylistController::class);
     Route::resource('video', VideoController::class);
+    Route::resource('device', TVController::class);
     Route::post('/playlist/{playlist}/file', [PlaylistController::class, 'upload']);
 });
 

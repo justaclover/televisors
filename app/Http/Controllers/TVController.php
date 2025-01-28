@@ -21,4 +21,36 @@ class TVController extends Controller
     {
         return response()->json(['ready' => false]);
     }
+
+    public function index()
+    {
+        return Inertia::render('Device/DeviceIndex', [
+            'items' => Device::all()
+        ]);
+    }
+
+    public function show(Device $device)
+    {
+        return Inertia::render('Device/DeviceShow', [
+            'device' => $device
+        ]);
+    }
+
+    public function update(Request $request, Device $device)
+    {
+        $device->update([
+            'name' => $request->name,
+            'comment' => $request->comment,
+            'location' => $request->location
+        ]);
+
+        response()->json([
+            'device' => [
+                'name' => $device->name,
+                'password' => $device->password,
+                'location' => $device->location
+            ]
+        ]);
+    }
+
 }

@@ -20,6 +20,11 @@ class Playlist extends Model implements HasMedia
         'comment'
     ];
 
+    public function devices()
+    {
+        return $this->belongsToMany(Device::class);
+    }
+
 //    public function registerMediaConversions(?Media $media = null): void
 //    {
 //        $this->addMediaConversion('compress')

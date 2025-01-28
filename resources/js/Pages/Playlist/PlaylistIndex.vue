@@ -5,26 +5,7 @@ import { router } from '@inertiajs/vue3'
 const props = defineProps({
     items: Array
 })
-// function uploadVideo() {
-//     const formData = new FormData()
-//     formData.append('video', document.getElementById('videoFile').files[0])
-//
-//     console.log(document.getElementById('videoFile').files[0])
-//     const config = { headers: {'Content-Type': 'multipart/form-data' } }
-//     axios.post('/admin/playlist/123', formData, config)
-//         .then(response => {
-//             console.log(response)
-//             document.getElementById('videoForm').reset()
-//             router.reload()
-//         })
-//         .catch(e => {
-//             console.log(e)
-//         })
-// }
-// const form = reactive({
-//     name: '',
-//     comment: ''
-// })
+
 const nameInput = ref('')
 const commentInput = ref('')
 
@@ -50,6 +31,9 @@ function addPlaylist() {
 <template>
     <div class="ml-32 pt-20">
         <section>
+            <a :href="`/admin`" class="mb-6">
+                <el-button type="primary" round><- Назад</el-button>
+            </a>
             <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Плейлисты</h2>
             <el-form id="playlistForm" class="mb-14">
                 <el-form-item label="Название плейлиста">
