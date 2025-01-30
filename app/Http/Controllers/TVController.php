@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
+use App\Models\Playlist;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -32,7 +33,9 @@ class TVController extends Controller
     public function show(Device $device)
     {
         return Inertia::render('Device/DeviceShow', [
-            'device' => $device
+            'device' => $device,
+            'playlists' => Playlist::all(),
+            'currentPlaylist' => $device->playlist()->first()
         ]);
     }
 

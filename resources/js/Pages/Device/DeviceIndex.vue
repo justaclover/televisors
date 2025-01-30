@@ -5,25 +5,6 @@ import { router } from '@inertiajs/vue3'
 const props = defineProps({
     items: Array
 })
-
-
-function addPlaylist() {
-    axios.defaults.timeout = 30000
-    console.log(document.getElementById('playlistName').value)
-    axios.post('/admin/playlist', {
-        name: document.getElementById('playlistName').value,
-        comment: document.getElementById('playlistComment').value
-    })
-        .then(response => {
-            document.getElementById('playlistForm').reset()
-            router.reload()
-        })
-        .catch(e => {
-            console.log(e)
-        })
-}
-
-
 </script>
 
 <template>

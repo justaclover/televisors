@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('comment')->nullable();
             $table->string('location')->nullable();
-            $table->foreignIdFor(Playlist::class)->nullable()->constrained();
+            $table->foreignIdFor(Playlist::class)->nullable()->constrained()->references('id')->on('playlists');
             $table->timestamps();
             $table->softDeletes();
         });

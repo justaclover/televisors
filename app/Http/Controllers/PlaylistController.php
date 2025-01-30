@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PlaylistResource;
+use App\Models\Device;
 use App\Models\Playlist;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -78,11 +80,25 @@ class PlaylistController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Playlist $playlist)
+    public function attach(Device $device, Playlist $playlist)
     {
-        //
+        $device->update([
+            'playlist_id' => $playlist->id
+        ]);
+
+        return response()->json([
+            "playlist" => $device->playlist()->first(),
+        ]);
+    }
+
+    public function detach(Device $device)
+    {
+        $device->update([
+            'playlist_id' => null
+        ]);
+
+        return response()->json([
+            $device->playlist_id
+        ]);
     }
 }

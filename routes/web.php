@@ -24,6 +24,8 @@ Route::prefix('/admin')->name('admin.')->group(function () {
     Route::resource('video', VideoController::class);
     Route::resource('device', TVController::class);
     Route::post('/playlist/{playlist}/file', [PlaylistController::class, 'upload']);
+    Route::get('/device/{device}/playlist/attach/{playlist}', [PlaylistController::class, 'attach']);
+    Route::get('/device/{device}/playlist/detach', [PlaylistController::class, 'detach']);
 });
 
 Route::resource('file', FileController::class);
