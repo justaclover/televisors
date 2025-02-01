@@ -1,7 +1,6 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
 import {Delete, Picture as IconPicture} from '@element-plus/icons-vue'
-import { router } from '@inertiajs/vue3'
 
 const props = defineProps({videos: Array, playlist: Object})
 
@@ -10,7 +9,7 @@ const props = defineProps({videos: Array, playlist: Object})
 <template>
     <section class="flex gap-3 flex-col ml-32 pt-20">
         <a :href="`/admin/playlist`" class="mb-10">
-            <el-button type="primary" round><- Назад</el-button>
+            <el-button type="primary" round>Назад</el-button>
         </a>
 
         <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{{playlist.name}}</h2>
@@ -34,9 +33,9 @@ const props = defineProps({videos: Array, playlist: Object})
             </a>
         </div>
 
-        <form class="upload-demo" method="POST" enctype="multipart/form-data" :action="`/admin/playlist/${playlist.id}/file`" id="videoForm">
+        <form class="upload-demo flex flex-row" method="POST" enctype="multipart/form-data" :action="`/admin/playlist/${playlist.id}/file`" id="videoForm">
             <input type="file" name="file" class="font-normal">
-            <button type="submit" class="font-normal text-white rounded-3xl text-center pl-5 pr-5 pt-3 pb-3" style="background-color: #67c23a">Загрузить видео</button>
+            <button type="submit" class="font-normal text-white rounded-3xl text-center pl-5 pr-5 pt-3 pb-3" style="background-color: #409EFF">Загрузить видео</button>
         </form>
     </section>
 </template>

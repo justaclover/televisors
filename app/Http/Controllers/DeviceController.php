@@ -10,7 +10,7 @@ use Inertia\Inertia;
 use function Pest\Laravel\json;
 
 
-class TVController extends Controller
+class DeviceController extends Controller
 {
     public function store()
     {

@@ -1,7 +1,4 @@
 <script setup>
-import {Head, usePage} from '@inertiajs/vue3'
-import {computed, reactive, ref} from 'vue'
-import { router } from '@inertiajs/vue3'
 const props = defineProps({
     items: Array
 })
@@ -11,7 +8,7 @@ const props = defineProps({
     <div class="ml-32 pt-20">
         <section>
             <a :href="`/admin`" class="mb-6">
-                <el-button type="primary" round><- Назад</el-button>
+                <el-button type="primary" round>Назад</el-button>
             </a>
             <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Устройства</h2>
 

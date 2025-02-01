@@ -47,7 +47,7 @@ function setPlaylist() {
 <template>
     <section class="flex gap-3 flex-col ml-32 pt-20">
         <a :href="`/admin/device`" class="mb-6">
-            <el-button type="primary" round><- Назад</el-button>
+            <el-button type="primary" round>Назад</el-button>
         </a>
         <h2 class="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{{device.id}}</h2>
         <h3 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{device.name}}</h3>

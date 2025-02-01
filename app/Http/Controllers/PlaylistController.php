@@ -49,6 +49,9 @@ class PlaylistController extends Controller
 
     public function upload(Request $request, Playlist $playlist)
     {
+        $request->validate([
+            'file' => 'required|file|mimes:mp4,webm,mov'
+        ]);
         $playlist->addMediaFromRequest('file')->toMediaCollection();
         return back();
     }
@@ -58,7 +61,7 @@ class PlaylistController extends Controller
      */
     public function show(Playlist $playlist)
     {
-        return Inertia::render('Playlist/Show', [
+        return Inertia::render('Playlist/PlaylistShow', [
             'playlist' => $playlist,
             'videos' => $playlist->getMedia('*')
         ]);
