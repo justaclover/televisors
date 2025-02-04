@@ -18,9 +18,17 @@ class DeviceController extends Controller
         return response()->json(['device_id' => $tv->id]);
     }
 
-    public function getPlaylist(Device $televisor)
+    public function getPlaylist(Device $device)
     {
-        return response()->json(['ready' => false]);
+        //return $device->playlist();
+        if ($device->playlist()->exists()) {
+            $ready = true;
+        }
+        else {$ready = false;}
+        return response()->json([
+            "ready" => $ready,
+            "videos" => $device->playlist()->first()->getMedia("*")
+        ]);
     }
 
     public function index()
