@@ -9,7 +9,15 @@ const nameInput = ref(props.device.name)
 const commentInput = ref(props.device.comment)
 const locationInput = ref(props.device.location)
 
-const playlistSelection = ref(props.currentPlaylist.name)
+let playlistSelection
+
+if (props.currentPlaylist === null) {
+    playlistSelection = ref('')
+}
+else {
+    playlistSelection = ref(props.currentPlaylist.name)
+}
+
 
 const options = Array(props.playlists.length)
 for (let playlist in props.playlists) {
@@ -36,6 +44,7 @@ function setPlaylist() {
     console.log(document.getElementById('playlistSelect').value)
     axios.get('/admin/device/' + props.device.id.toString() + '/playlist/attach/' + document.getElementById('playlistSelect').value)
         .then(response => {
+            console.log(response)
             router.reload()
         })
         .catch(e => {
@@ -51,7 +60,8 @@ function setPlaylist() {
         </a>
         <h2 class="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{{device.id}}</h2>
         <h3 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{device.name}}</h3>
-        <h3 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Плейлист: {{currentPlaylist.name}}</h3>
+        <h3 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white" v-if="currentPlaylist">Плейлист: {{currentPlaylist.name}}</h3>
+        <h3 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white" v-else>Плейлист: </h3>
         <p class="mb-4 font-normal text-gray-700 dark:text-gray-400">Комментарий: {{device.comment}}</p>
         <p class="mb-8 font-normal text-gray-700 dark:text-gray-400">Местонахождение: {{device.location}}</p>
 
@@ -75,7 +85,8 @@ function setPlaylist() {
             margin-right: 30px;
             background-color: white">
                 <select id="playlistSelect" v-model="playlistSelection" style="height: 32px; width: 240px">
-                    <option disabled selected hidden>{{currentPlaylist.name}}</option>
+                    <option disabled selected hidden v-if="currentPlaylist">{{currentPlaylist.name}}</option>
+                    <option disabled selected hidden v-else> </option>
                     <option v-for="playlist in playlists" :key="playlist.id" :value="playlist.id" :label="playlist.name"/>
                 </select>
             </div>

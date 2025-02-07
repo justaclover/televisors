@@ -3,8 +3,11 @@ import {Head, usePage} from '@inertiajs/vue3'
 import {computed, reactive} from 'vue'
 import { router } from '@inertiajs/vue3'
 
+const props = defineProps({
+    readyForVideos: Boolean
+})
+
 let device_id
-let ready_to_play = false
 
 checkForId()
 
@@ -20,32 +23,21 @@ function checkForId() {
     else {
         device_id = localStorage.getItem('device_id')
         console.log(device_id)
-        getVideos(device_id)
+        // axios.get('/devices/' + device_id.toString() + '/playlist')
+        //     .then(response => {
+        //         console.log(response)
+        //     })
+        if (!props.readyForVideos) {
+            router.get('/devices/' + device_id.toString() + '/playlist')
+        }
+
     }
-
-
-}
-
-function getVideos(id) {
-    let url = '/devices/' + id.toString() + '/playlist'
-    axios(url)
-        .then(response => {
-            router.reload(playVideos(response.data['ready']))
-        })
-}
-
-function playVideos(ready){
-    console.log(ready)
-    ready_to_play = ready
 }
 
 </script>
 
 <template>
-    <div v-if="ready_to_play">
-        <h1>Тут видеоплеер</h1>
-    </div>
-    <h1 v-else>{{ device_id }}</h1>
+    <h1>{{ device_id }}</h1>
 </template>
 
 <style scoped>

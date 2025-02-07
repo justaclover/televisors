@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use App\Models\Playlist;
+use http\Env\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,15 +21,19 @@ class DeviceController extends Controller
 
     public function getPlaylist(Device $device)
     {
-        //return $device->playlist();
+        //return $device->playlist()->exists();
         if ($device->playlist()->exists()) {
-            $ready = true;
+            return Inertia::render('ShowVideos', [
+                'videos' => $device->playlist()->first()->getMedia('*')
+            ]);
+
+//            return response()->json(['videos' => $device->playlist()->first()->getMedia('*')]);
         }
-        else {$ready = false;}
-        return response()->json([
-            "ready" => $ready,
-            "videos" => $device->playlist()->first()->getMedia("*")
-        ]);
+        else {
+            return Inertia::render('Index', [
+                'readyForVideos' => true
+            ]);
+        }
     }
 
     public function index()
