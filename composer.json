@@ -11,6 +11,7 @@
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "spatie/laravel-medialibrary": "^11.11",
+        "symfony/filesystem": "^7.2",
         "tightenco/ziggy": "^2.5"
     },
     "require-dev": {

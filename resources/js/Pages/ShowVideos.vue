@@ -1,29 +1,25 @@
 <script setup>
+    import {ref} from 'vue'
     const props = defineProps({
         videos: Array
     })
 
-    setup()
+    // console.log(props.videos)
+    const videoPlayer = ref(null)
 
-    let video_url_array = []
+    let videoIndex = 0
 
-    function setup() {
-        console.log(props.videos)
-        let videoIndex = 0;
-        const videoPlayer = document.getElementById('videoPlayer')
-        console.log(videoPlayer)
+    console.log(props.videos[videoIndex].original_url)
 
+    videoPlayer.src = props.videos[videoIndex].original_url;
+    videoPlayer.onended = function(){
+        videoIndex = (videoIndex + 1) % props.videos.length;
         videoPlayer.src = props.videos[videoIndex].original_url;
-        videoPlayer.onended = function(){
-            videoIndex = (videoIndex + 1) % props.videos.length;
-            videoPlayer.src = props.videos[videoIndex].original_url;
-        }
     }
 
 </script>
 
 <template>
-    <video preload="auto" autoplay>
-        <source id="videoPlayer" src="">
+    <video preload="auto" autoplay ref="videoPlayer" muted src="">
     </video>
 </template>
