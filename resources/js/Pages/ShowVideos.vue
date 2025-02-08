@@ -8,18 +8,23 @@
     const videoPlayer = ref(null)
 
     let videoIndex = 0
+    var videoUrl = props.videos[videoIndex].original_url
 
     console.log(props.videos[videoIndex].original_url)
 
-    videoPlayer.src = props.videos[videoIndex].original_url;
-    videoPlayer.onended = function(){
+    function changeVideo(){
         videoIndex = (videoIndex + 1) % props.videos.length;
-        videoPlayer.src = props.videos[videoIndex].original_url;
+        console.log(videoIndex)
+        videoUrl = props.videos[videoIndex].original_url;
+        videoPlayer.value.src = videoUrl
+        console.log(videoPlayer.value.src)
+        videoPlayer.value.play()
     }
 
 </script>
 
 <template>
-    <video preload="auto" autoplay ref="videoPlayer" muted src="">
+    <video preload="auto" autoplay ref="videoPlayer" muted v-on:ended="changeVideo">
+        <source :src="videoUrl">
     </video>
 </template>
