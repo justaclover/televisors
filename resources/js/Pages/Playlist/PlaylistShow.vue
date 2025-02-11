@@ -8,6 +8,8 @@ const props = defineProps({videos: Array, playlist: Object})
 const nameInput = ref(props.playlist.name)
 const commentInput = ref(props.playlist.comment)
 
+const selectedVideoName = ref("Файл не выбран")
+
 function updatePlaylist() {
     axios.defaults.timeout = 30000
     axios.put('/admin/playlist/' + props.playlist.id.toString(), {
@@ -20,6 +22,11 @@ function updatePlaylist() {
         .catch(e => {
             console.log(e)
         })
+}
+
+function videoChanged(e) {
+    selectedVideoName.value = e.target.files[0].name
+    console.log(selectedVideoName.value)
 }
 
 </script>
@@ -63,9 +70,10 @@ function updatePlaylist() {
 
         <form class="upload-demo flex flex-row" method="POST" enctype="multipart/form-data" :action="`/admin/playlist/${playlist.id}/file`" id="videoForm">
             <label for="videoInput" class="custom-video-input font-normal mr-6">Выбрать видео</label>
-            <input type="file" name="file" class="font-normal video-input" id="videoInput">
+            <input type="file" name="file" class="font-normal video-input" id="videoInput" @change="videoChanged">
             <button type="submit" class="font-normal text-white rounded-3xl text-center pl-5 pr-5 h-8" style="background-color: #409EFF">Загрузить видео</button>
         </form>
+        <span style="font-size: 12px">{{selectedVideoName}}</span>
     </section>
     </body>
 </template>

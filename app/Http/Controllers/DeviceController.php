@@ -47,6 +47,7 @@ class DeviceController extends Controller
         return Inertia::render('Device/DeviceShow', [
             'device' => $device,
             'playlists' => Playlist::all(),
+            'videos' => $device->playlist()->first()->getMedia('*'),
             'currentPlaylist' => $device->playlist()->first()
         ]);
     }

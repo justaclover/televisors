@@ -3,7 +3,11 @@ import {Link, router} from "@inertiajs/vue3";
 import {Delete, Picture as IconPicture} from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
-const props = defineProps({device: Object, playlists: Array, currentPlaylist: Object})
+const props = defineProps({
+    device: Object,
+    playlists: Array,
+    videos: Array,
+    currentPlaylist: Object})
 
 const nameInput = ref(props.device.name)
 const commentInput = ref(props.device.comment)
@@ -90,7 +94,7 @@ function setPlaylist() {
         </div>
 
         <div class="mb-14">
-            <a v-for="i in videos" :href="`/file/${i.uuid}`" class="pl-6 mb-4 relative flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+            <a v-if="videos" v-for="i in videos" :href="`/file/${i.uuid}`" class="pl-6 mb-4 relative flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                 <el-image>
                     <template #error>
                         <div class="image-slot">
