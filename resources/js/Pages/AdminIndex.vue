@@ -10,8 +10,8 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="ml-32 pt-20">
-        <a :href="`/admin/playlist`" class="mb-8">
+    <div class="ml-32 pt-20 flex flex-row gap-14 max-w-full">
+        <a :href="`/admin/playlist`" class="w-4/12">
             <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Плейлисты</h2>
 
             <template v-for="item in playlists">
@@ -22,7 +22,8 @@ const props = defineProps({
                 </a>
             </template>
         </a>
-        <a :href="`/admin/device`" class="mb-8">
+
+        <a :href="`/admin/device`" class="w-4/12">
             <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Устройства</h2>
 
             <template v-for="item in devices">

@@ -7,6 +7,7 @@ use App\Models\Device;
 use App\Models\Playlist;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PlaylistController extends Controller
 {
@@ -80,7 +81,26 @@ class PlaylistController extends Controller
      */
     public function update(Request $request, Playlist $playlist)
     {
-        //
+        $playlist->update([
+            'name' => $request->name,
+            'comment' => $request->comment,
+        ]);
+
+        response()->json([
+            'device' => [
+                'name' => $playlist->name,
+                'password' => $playlist->password,
+            ]
+        ]);
+    }
+
+    public function destroy(Playlist $playlist)
+    {
+        $playlist->getMedia()->each(function (Media $media) {
+            $media->delete();
+        });
+        $playlist->delete();
+        return back();
     }
 
     public function attach(Device $device, Playlist $playlist)

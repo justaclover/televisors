@@ -27,9 +27,9 @@ for (let playlist in props.playlists) {
 function updateDevice() {
     axios.defaults.timeout = 30000
     axios.put('/admin/device/' + props.device.id.toString(), {
-        name: document.getElementById('deviceName').value,
-        comment: document.getElementById('deviceComment').value,
-        location: document.getElementById('deviceLocation').value
+        name: nameInput.value,
+        comment: commentInput.value,
+        location: locationInput.value
     })
         .then(response => {
             router.reload()
@@ -54,10 +54,10 @@ function setPlaylist() {
 </script>
 
 <template>
-    <section class="flex gap-3 flex-col ml-32 pt-20">
-        <a :href="`/admin/device`" class="mb-6">
-            <el-button type="primary" round>Назад</el-button>
-        </a>
+    <body class="ml-32 pt-20 pb-20">
+    <el-link type="primary" :href="`/admin/device`" class="mb-6">Назад</el-link>
+
+    <section class="flex gap-3 flex-col">
         <h2 class="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{{device.id}}</h2>
         <h3 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{device.name}}</h3>
         <h3 class="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white" v-if="currentPlaylist">Плейлист: {{currentPlaylist.name}}</h3>
@@ -79,11 +79,7 @@ function setPlaylist() {
                 <el-button type="primary" @click="updateDevice" round>Обновить данные</el-button>
             </el-form>
 
-            <div class="border-gray-600 rounded-b-sm" style="
-            border: #CFD3DC 1px solid;
-            border-radius: 3px;
-            margin-right: 30px;
-            background-color: white">
+            <div class="border-gray-600 rounded-b-sm playlist-select">
                 <select id="playlistSelect" v-model="playlistSelection" style="height: 32px; width: 240px">
                     <option disabled selected hidden v-if="currentPlaylist">{{currentPlaylist.name}}</option>
                     <option disabled selected hidden v-else> </option>
@@ -112,6 +108,26 @@ function setPlaylist() {
             </a>
         </div>
     </section>
+    </body>
 </template>
+
+<style scoped>
+    .playlist-select {
+        border-radius: 3px;
+        margin-right: 30px;
+        background-color: white;
+    }
+
+    #playlistSelect {
+        border: #CFD3DC 1px solid;
+        border-radius: 3px;
+        margin-right: 30px;
+        background-color: white;
+        font-size: 14px;
+        padding: 5px;
+        height: 35px;
+        width: 350px;
+    }
+</style>
 
 

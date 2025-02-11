@@ -23,10 +23,8 @@ function checkForId() {
     else {
         device_id = localStorage.getItem('device_id')
         console.log(device_id)
-        // axios.get('/devices/' + device_id.toString() + '/playlist')
-        //     .then(response => {
-        //         console.log(response)
-        //     })
+
+        //нужно для того, чтобы если плейлист не назначен или пустой, отображался id
         if (!props.readyForVideos) {
             router.get('/devices/' + device_id.toString() + '/playlist')
         }
@@ -37,9 +35,20 @@ function checkForId() {
 </script>
 
 <template>
-    <h1>{{ device_id }}</h1>
+    <div class="empty">
+        <h1>{{device_id}}</h1>
+    </div>
 </template>
 
 <style scoped>
+    .empty {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
 
+    .empty h1 {
+        font-size: 256px;
+        font-weight: bold;
+    }
 </style>

@@ -8,6 +8,7 @@ use http\Env\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use function Pest\Laravel\json;
 
 
@@ -21,13 +22,11 @@ class DeviceController extends Controller
 
     public function getPlaylist(Device $device)
     {
-        //return $device->playlist()->exists();
-        if ($device->playlist()->exists()) {
+        if ($device->playlist()->exists() and count($device->playlist()->first()->getMedia('*')) !== 0) {
             return Inertia::render('ShowVideos', [
                 'videos' => $device->playlist()->first()->getMedia('*')
             ]);
-
-//            return response()->json(['videos' => $device->playlist()->first()->getMedia('*')]);
+            //return response()->json(['videos' => $device->playlist()->first()->getMedia('*')]);
         }
         else {
             return Inertia::render('Index', [
@@ -67,6 +66,12 @@ class DeviceController extends Controller
                 'location' => $device->location
             ]
         ]);
+    }
+
+    public function destroy(Device $device)
+    {
+        $device->delete();
+        return back();
     }
 
 }
