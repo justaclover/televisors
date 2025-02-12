@@ -12,11 +12,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('devices', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('comment')->nullable();
-            $table->string('location')->nullable();
+            $table->string('name');
+            $table->string('comment');
             $table->foreignIdFor(Playlist::class)->nullable()->constrained()->references('id')->on('playlists');
             $table->timestamps();
             $table->softDeletes();
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('devices');
+        Schema::dropIfExists('groups');
     }
 };

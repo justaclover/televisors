@@ -23,6 +23,7 @@ function checkForId() {
     else {
         device_id = localStorage.getItem('device_id')
         console.log(device_id)
+        console.log(props.readyForVideos)
 
         //нужно для того, чтобы если плейлист не назначен или пустой, отображался id
         if (!props.readyForVideos) {
