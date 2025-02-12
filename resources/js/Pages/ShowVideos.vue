@@ -30,7 +30,7 @@
 </script>
 
 <template>
-    <video preload="auto" autoplay ref="videoPlayer" muted v-on:ended="changeVideo">
+    <video preload="auto" autoplay ref="videoPlayer" muted v-on:ended="changeVideo" class="w-full h-full">
         <source :src="videoUrl">
     </video>
 </template>
