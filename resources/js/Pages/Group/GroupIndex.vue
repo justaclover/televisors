@@ -9,7 +9,6 @@ const props = defineProps({
 const nameInput = ref('')
 const commentInput = ref('')
 
-
 function addPlaylist() {
     axios.defaults.timeout = 30000
     console.log(document.getElementById('playlistName').value)

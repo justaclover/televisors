@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\VideoController;
+use App\Models\Group;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +24,7 @@ Route::get('/admin', [AdminController::class, 'index']);
 Route::prefix('/admin')->name('admin.')->group(function () {
     Route::resource('playlist', PlaylistController::class);
     Route::resource('device', DeviceController::class);
+    Route::resource('group', GroupController::class);
     Route::post('/playlist/{playlist}/file', [PlaylistController::class, 'upload']);
     Route::get('/device/{device}/playlist/attach/{playlist}', [PlaylistController::class, 'attach']);
     Route::get('/device/{device}/playlist/detach', [PlaylistController::class, 'detach']);
