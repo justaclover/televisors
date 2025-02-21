@@ -1,9 +1,23 @@
 <script setup>
     import {ref} from 'vue'
     import {router} from "@inertiajs/vue3";
+    import { usePoll } from '@inertiajs/vue3'
+    import { onErrorCaptured } from "vue";
+
+
     const props = defineProps({
         videos: Array
     })
+
+    usePoll(2000, {
+        onStart() {
+            console.log('Polling request started')
+        },
+        onFinish() {
+            console.log('Polling request finished')
+            console.log(props.videos)
+        }
+    }, { keepAlive: true })
 
     // console.log(props.videos)
     const videoPlayer = ref(null)
@@ -26,6 +40,10 @@
             router.visit('/')
         }
     }
+
+    onErrorCaptured((NotSupportedError) => {
+        changeVideo()
+    })
 
 </script>
 

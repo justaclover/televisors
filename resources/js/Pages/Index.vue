@@ -1,5 +1,5 @@
 <script setup>
-import {Head, usePage} from '@inertiajs/vue3'
+import {Head, usePage, usePoll} from '@inertiajs/vue3'
 import {computed, reactive} from 'vue'
 import { router } from '@inertiajs/vue3'
 
@@ -29,6 +29,16 @@ function checkForId() {
         if (!props.readyForVideos) {
             router.get('/devices/' + device_id.toString() + '/playlist')
         }
+        else {
+            usePoll(2000, {
+                onStart() {
+                    console.log('Polling request started')
+                },
+                onFinish() {
+                    console.log('Polling request finished')
+                }
+            }, { keepAlive: true })
+        }
 
     }
 }
@@ -46,6 +56,7 @@ function checkForId() {
         display: flex;
         justify-content: center;
         align-content: center;
+        align-self: center;
     }
 
     .empty h1 {
