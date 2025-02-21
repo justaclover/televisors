@@ -6,6 +6,7 @@ use FFMpeg\FFMpeg;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -27,12 +28,12 @@ class Playlist extends Model implements HasMedia
         'comment'
     ];
 
-    public function devices(): BelongsToMany
+    public function devices(): HasMany
     {
-        return $this->belongsToMany(Device::class, 'devices_playlists', 'playlist_id', 'id');
+        return $this->hasMany(Device::class);
     }
 
-//    public function registerMediaConversions(?Media $media = null): void
+    //    public function registerMediaConversions(?Media $media = null): void
 //    {
 //        $this->addMediaConversion('compress')
 //            ->width(368)

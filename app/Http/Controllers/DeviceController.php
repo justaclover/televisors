@@ -20,19 +20,19 @@ class DeviceController extends Controller
         return response()->json(['device_id' => $tv->id]);
     }
 
-    public function getPlaylist(Device $device)
-    {
-        if ($device->playlist()->exists()){
-            if (count($device->playlist()->first()->getMedia('*')) !== 0) {
-                return Inertia::render('ShowVideos', [
-                    'videos' => $device->playlist()->first()->getMedia('*')
-                ]);
-            }
-        }
-        return Inertia::render('Index', [
-            'readyForVideos' => true
-        ]);
-    }
+    // public function getPlaylist(Device $device)
+    // {
+    //     if ($device->playlist()->exists()){
+    //         if (count($device->playlist()->first()->getMedia('*')) !== 0) {
+    //             return Inertia::render('ShowVideos', [
+    //                 'videos' => $device->playlist()->first()->getMedia('*')
+    //             ]);
+    //         }
+    //     }
+    //     return Inertia::render('Index', [
+    //         'readyForVideos' => true
+    //     ]);
+    // }
 
     public function index()
     {
@@ -43,10 +43,9 @@ class DeviceController extends Controller
 
     public function show(Device $device)
     {
-        if ($device->playlist()->exists()){
+        if ($device->playlist()->exists()) {
             $videos = $device->playlist()->first()->getMedia('*');
-        }
-        else {
+        } else {
             $videos = null;
         }
         return Inertia::render('Device/DeviceShow', [

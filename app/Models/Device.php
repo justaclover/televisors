@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,8 +21,8 @@ class Device extends Model
         'playlist_id'
     ];
 
-    public function playlist(): HasMany
+    public function playlist(): BelongsTo
     {
-        return $this->hasMany(Playlist::class, 'id', 'playlist_id');
+        return $this->belongsTo(Playlist::class);
     }
 }
