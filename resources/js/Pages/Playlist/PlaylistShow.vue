@@ -70,7 +70,7 @@ function videoChanged(e) {
 
         <form class="upload-demo flex flex-row" method="POST" enctype="multipart/form-data" :action="`/admin/playlist/${playlist.id}/file`" id="videoForm">
             <label for="videoInput" class="custom-video-input font-normal mr-6">Выбрать видео</label>
-            <input type="file" name="file" class="font-normal video-input" id="videoInput" @change="videoChanged">
+            <input accept="video/*" type="file" name="file" class="font-normal video-input" id="videoInput" @change="videoChanged">
             <button type="submit" class="font-normal text-white rounded-3xl text-center pl-5 pr-5 h-8" style="background-color: #409EFF">Загрузить видео</button>
         </form>
         <span style="font-size: 12px">{{selectedVideoName}}</span>
