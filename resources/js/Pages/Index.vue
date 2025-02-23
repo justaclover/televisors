@@ -13,26 +13,28 @@ onMounted(() => {
     document.cookie = `device_id=${props.device_id}; max-age=3600`;
 });
 
-usePoll(2000);
-    // usePoll(2000, {
-    //     onStart() {
-    //         console.log('Polling request started')
-    //     },
-    //     onFinish() {
-    //         console.log('Polling request finished')
-    //         console.log(props.videos)
-    //     }
-    // }, { keepAlive: true })
+// usePoll(2000);
+    usePoll(2000, {
+        onStart() {
+            console.log('Polling request started')
+        },
+        onFinish() {
+            console.log('Polling request finished')
+            console.log(props.videos)
+        }
+    }, { keepAlive: true })
 
     // console.log(props.videos)
     const videoPlayer = ref(null);
 
     const videoIndex = ref(0);
-
-
     const videoUrl = computed(() => `/file/${props.videos[videoIndex.value].uuid}`);
 
-    // console.log(props.videos[videoIndex.value].original_url);
+    const videoStyle = ref({
+        width: '100%',
+        height: '100vh',
+        objectFit: 'contain',
+    });
 
     function changeVideo(){
         try {
@@ -55,12 +57,15 @@ usePoll(2000);
 </script>
 
 <template>
-    <div v-if="props.videos.length == 0" class="empty">
-        <h1>{{props.device_id}}</h1>
-    </div>
+    <section>
+        <div v-if="props.videos.length == 0" class="empty">
+            <h1>{{props.device_id}}</h1>
+        </div>
 
-    
-    <video v-else :src="videoUrl" preload="auto" autoplay ref="videoPlayer" muted v-on:ended="changeVideo" class="w-full h-full" />
+        <div v-else class="video-container">
+            <video :src="videoUrl" preload="auto" autoplay ref="videoPlayer" muted v-on:ended="changeVideo" :style="videoStyle"/>
+        </div>
+    </section>
 </template>
 
 <style scoped>
@@ -75,4 +80,11 @@ usePoll(2000);
         font-size: 256px;
         font-weight: bold;
     }
+
+    section {
+        display: flex;
+        align-content: center;
+        justify-content: center;
+    }
+
 </style>
