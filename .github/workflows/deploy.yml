@@ -23,4 +23,4 @@ jobs:
       # Шаг 3: Развернуть код на сервере
       - name: Deploy to server
         run: |
-          ssh ubuntuuser@tv.kioskapi.ru 'cd /home/ubuntuuser/televisors && git pull origin main'
+          ssh ubuntuuser@81.94.159.238 'cd /home/ubuntuuser/televisors && git pull origin main'
