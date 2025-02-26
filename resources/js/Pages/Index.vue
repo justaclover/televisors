@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
-    document.cookie = `device_id=${props.device_id}`;
+    document.cookie = `device_id=${props.device_id}; max-age=3600`;
 });
 
 // usePoll(2000);
@@ -41,6 +41,9 @@ onMounted(() => {
             // videoPlayer.value.src = videoUrl;
             // console.log(videoPlayer.value.src);
             videoPlayer.value.play();
+        }
+        catch (e) {
+            router.visit('/');
         }
     }
 

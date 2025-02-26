@@ -17,11 +17,12 @@ use Inertia\Inertia;
 //Сторона устройства
 
 Route::get('/', function (Request $request) {
-    $deviceId = Cookie::get('device_id');
-    // throw new Exception(json_encode(Cookie::get()));
-    $device = Device::firstOrCreate([
-        'id' => $deviceId
-    ]);
+    $device = Device::first(Cookie::get('device_id')) ?: Device::create();
+//    $deviceId = Cookie::get('device_id');
+//    // throw new Exception(json_encode(Cookie::get()));
+//    $device = Device::firstOrCreate([
+//        'id' => $deviceId
+//    ]);
 
     return Inertia::render('Index', [
         'device_id' => $device->id,
@@ -29,7 +30,7 @@ Route::get('/', function (Request $request) {
     ]);
 });
 Route::get('/add-device', [DeviceController::class, 'store']);
-Route::get('/devices/{device}/playlist', [DeviceController::class, 'getPlaylist'])->name('device.playlist');
+//Route::get('/devices/{device}/playlist', [DeviceController::class, 'getPlaylist'])->name('device.playlist');
 
 
 
