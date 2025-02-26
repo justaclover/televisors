@@ -10,14 +10,11 @@ const props = defineProps({
 });
 
 onMounted(() => {
-    document.cookie = `device_id=${props.device_id}; max-age=3600`;
+    document.cookie = `device_id=${props.device_id}`;
 });
 
 // usePoll(2000);
     usePoll(2000, {
-        onStart() {
-            console.log('Polling request started')
-        },
         onFinish() {
             console.log('Polling request finished')
             console.log(props.videos)
@@ -44,9 +41,6 @@ onMounted(() => {
             // videoPlayer.value.src = videoUrl;
             // console.log(videoPlayer.value.src);
             videoPlayer.value.play();
-        }
-        catch (e) {
-            // router.visit('/');
         }
     }
 
