@@ -10,12 +10,15 @@ const props = defineProps({
 });
 
 onMounted(() => {
-    document.cookie = `device_id=${props.device_id}; max-age=3600`;
+    document.cookie = `device_id=${props.device_id}`;
 });
 
 // usePoll(2000);
     usePoll(2000, {
         onFinish() {
+            if (document.cookie.at((document.cookie.split('=')).indexOf('device_id') + 1) != props.device_id.toString()) {
+                document.cookie = `device_id=${props.device_id}`;
+            }
             console.log('Polling request finished')
             console.log(props.videos)
         }

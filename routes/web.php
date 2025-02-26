@@ -17,12 +17,16 @@ use Inertia\Inertia;
 //Сторона устройства
 
 Route::get('/', function (Request $request) {
-    $device = Device::first(Cookie::get('device_id')) ?: Device::create();
+    $deviceId = Cookie::get('device_id');
+    $device = $deviceId === null ? Device::query()->create() : Device::firstOrCreate([
+        'id' => $deviceId
+    ]);
+
+    //$device = (!(Cookie::get('device_id') === null) and (Device::query()->where('id', Cookie::get('device_id'))->first())) ?: Device::query()->create();
+    //dd(Device::query()->first(Cookie::get('device_id')));
 //    $deviceId = Cookie::get('device_id');
 //    // throw new Exception(json_encode(Cookie::get()));
-//    $device = Device::firstOrCreate([
-//        'id' => $deviceId
-//    ]);
+//
 
     return Inertia::render('Index', [
         'device_id' => $device->id,
