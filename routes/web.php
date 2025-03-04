@@ -22,6 +22,7 @@ Route::get('/', function (Request $request) {
         'id' => $deviceId
     ]);
 
+    //return response()->json('test');
     //$device = (!(Cookie::get('device_id') === null) and (Device::query()->where('id', Cookie::get('device_id'))->first())) ?: Device::query()->create();
     //dd(Device::query()->first(Cookie::get('device_id')));
 //    $deviceId = Cookie::get('device_id');

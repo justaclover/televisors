@@ -50,7 +50,8 @@ function addPlaylist() {
 
                     <div class="flex flex-col justify-between p-4 leading-normal flex-wrap">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{item.name}}</h5>
-                        <p class="font-normal text-gray-700 dark:text-gray-400">{{item.comment}}</p>
+                        <p class="font-normal text-gray-700 dark:text-gray-400">Комментарий: {{item.comment}}</p>
+                        <p class="font-normal text-gray-700 dark:text-gray-400">Количество видео: {{item.video_count}}</p>
                     </div>
                     <Link method="DELETE" :href="`/admin/playlist/${item.id}`" class="absolute right-10 top-14">
                         <el-button type="danger" circle :icon="Delete"/>

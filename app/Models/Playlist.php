@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -27,6 +28,21 @@ class Playlist extends Model implements HasMedia
         'name',
         'comment'
     ];
+
+    protected $appends = [
+        'video_count'
+    ];
+
+    public function getVideoCountAttribute(){
+        return Cache::remember('video_count' . $this->id, 3600, function () {
+            return $this->getMedia('*')->count();
+        });
+    }
+    public function updateVideoCount()
+    {
+        Cache::forget('video_count' . $this->id);
+        Cache::put('video_count' . $this->id, $this->getMedia('*')->count());
+    }
 
     public function devices(): HasMany
     {

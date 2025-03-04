@@ -1,16 +1,33 @@
 <script setup>
-import {Head, usePage} from '@inertiajs/vue3'
-import {computed, reactive, ref} from 'vue'
-import { router } from '@inertiajs/vue3'
+import draggable from 'vuedraggable'
 import {CirclePlusFilled} from "@element-plus/icons-vue";
+import {ref} from "vue";
+import Drag from "@/Pages/Drag.vue";
+
 const props = defineProps({
     playlists: Array,
     devices: Array
 })
 
+console.log(props.playlists)
 </script>
 
 <template>
+    <!--
+    <div v-for="item in playlists">
+        <draggable v-model="meals" tag="ul" group="devices">
+            <template #item="{ element: meal }">
+                <li>{{ meal }}</li>
+            </template>
+        </draggable>
+    </div>
+    <p>---------------</p>
+    <draggable v-model="yuckyMeals" tag="ul" group="devices">
+        <template #item="{ element: meal }">
+            <li>{{ meal }}</li>
+        </template>
+    </draggable>
+    -->
     <div class="ml-32 pt-20 flex flex-row gap-8 max-w-full">
         <a :href="`/admin/playlist`" class="w-4/12">
             <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Плейлисты</h2>
@@ -20,6 +37,7 @@ const props = defineProps({
 
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{item.name}}</h5>
                     <p class="font-normal text-gray-700 dark:text-gray-400">Комментарий: {{item.comment}}</p>
+                    <p class="font-normal text-gray-700 dark:text-gray-400">Количество видео: {{item.video_count}}</p>
                 </a>
             </template>
             <div class="flex justify-center align-middle max-w-sm">

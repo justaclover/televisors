@@ -50,6 +50,8 @@ function videoChanged(e) {
             </el-form>
         </div>
         <div class="mb-14">
+            <h3 class="mb-8 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Видео</h3>
+            <p class="font-normal mb-4 text-gray-700 dark:text-gray-400">Количество видео: {{playlist.video_count}}</p>
             <a v-for="i in videos" :href="`/file/${i.uuid}`" class="pl-6 mb-4 relative flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                 <el-image>
                     <template #error>

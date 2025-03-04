@@ -6,6 +6,7 @@ use App\Http\Resources\PlaylistResource;
 use App\Models\Device;
 use App\Models\Playlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -14,6 +15,7 @@ class PlaylistController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
         return Inertia::render('Playlist/PlaylistIndex', [
@@ -54,6 +56,9 @@ class PlaylistController extends Controller
             'file' => 'required|file|mimes:mp4,webm,mov'
         ]);
         $playlist->addMediaFromRequest('file')->toMediaCollection();
+//        Cache::forget('video_count' . $playlist->id);
+//        Cache::put('video_count' . $playlist->id, $playlist->getMedia('*')->count());
+        $playlist->updateVideoCount();
         return back();
     }
 
@@ -99,6 +104,8 @@ class PlaylistController extends Controller
         $playlist->getMedia()->each(function (Media $media) {
             $media->delete();
         });
+
+        Cache::forget('video_count' . $playlist->id);
         $playlist->delete();
         return back();
     }
