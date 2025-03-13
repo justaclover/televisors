@@ -1,7 +1,9 @@
 <script setup>
-import {Head, usePage, usePoll} from '@inertiajs/vue3'
+import {usePoll} from '@inertiajs/vue3'
 import {computed, reactive, onMounted, ref, onErrorCaptured} from 'vue'
 import { router } from '@inertiajs/vue3'
+import { VideoPlayer } from '@videojs-player/vue'
+import 'video.js/dist/video-js.css'
 
 const props = defineProps({
     device_id: Number,
@@ -14,7 +16,7 @@ onMounted(() => {
 });
 
 // usePoll(2000);
-    usePoll(2000, {
+    usePoll(4000, {
         onFinish() {
             if (document.cookie.at((document.cookie.split('=')).indexOf('device_id') + 1) != props.device_id.toString()) {
                 document.cookie = `device_id=${props.device_id}`;
@@ -58,11 +60,12 @@ onMounted(() => {
 
 <template>
     <section>
-        <div v-if="props.videos.length == 0" class="empty">
+        <div v-if="props.videos.length === 0" class="empty">
             <h1>{{props.device_id}}</h1>
         </div>
 
         <div v-else class="video-container">
+            <!--<video-player src="http://127.0.0.1:8000/storage/1/WIN_20250131_16_44_39_Pro.mp4" autoplay preload="auto" muted/>-->
             <video :src="videoUrl" preload="auto" autoplay ref="videoPlayer" muted v-on:ended="changeVideo" :style="videoStyle"/>
         </div>
     </section>
@@ -85,6 +88,12 @@ onMounted(() => {
         display: flex;
         align-content: center;
         justify-content: center;
+    }
+
+    video-player {
+        width: 100%;
+        height: 100vh;
+        object-fit: contain;
     }
 
 </style>

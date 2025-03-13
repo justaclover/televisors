@@ -5,6 +5,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\UploadFileController;
 use App\Http\Controllers\VideoController;
 use App\Models\Device;
 use App\Models\Group;
@@ -46,7 +47,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
     Route::resource('playlist', PlaylistController::class);
     Route::resource('device', DeviceController::class);
     Route::resource('group', GroupController::class);
-    Route::post('/playlist/{playlist}/file', [PlaylistController::class, 'upload']);
+    Route::post('/playlist/{playlist}/file', [UploadFileController::class, 'upload']);
     Route::get('/device/{device}/playlist/attach/{playlist}', [PlaylistController::class, 'attach']);
     Route::get('/device/{device}/playlist/detach', [PlaylistController::class, 'detach']);
 });

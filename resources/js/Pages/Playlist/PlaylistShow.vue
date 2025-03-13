@@ -1,14 +1,30 @@
 <script setup>
 import {Link, router} from "@inertiajs/vue3";
 import {Delete, Picture as IconPicture} from '@element-plus/icons-vue'
+import * as Icons from '@element-plus/icons-vue';
 import {ref} from "vue";
+import { useDropzone } from "vue3-dropzone";
+import { uploadService } from 'vuejs-chunks-upload';
 
-const props = defineProps({videos: Array, playlist: Object})
+const props = defineProps({videos: Array, playlist: Object, done: Number})
+
+const selectedVideoName = ref("Файл не выбран")
+const videoFile = ref()
+const progress = ref(0)
+const startedUploading = ref(false)
 
 const nameInput = ref(props.playlist.name)
 const commentInput = ref(props.playlist.comment)
 
-const selectedVideoName = ref("Файл не выбран")
+function onDrop(f, rejectReasons) {
+    console.log(f.raw);
+    // selectedVideoName.value = acceptFiles[0].name;
+    videoFile.value = f.raw;
+    // console.log(getInputProps)
+    // console.log(getRootProps)
+}
+
+const { getRootProps, getInputProps, ...rest } = useDropzone({ onDrop });
 
 function updatePlaylist() {
     axios.defaults.timeout = 30000
@@ -24,11 +40,29 @@ function updatePlaylist() {
         })
 }
 
-function videoChanged(e) {
-    selectedVideoName.value = e.target.files[0].name
-    console.log(selectedVideoName.value)
-}
+function uploadVideo(){
+    console.log(videoFile.value)
 
+    startedUploading.value = true
+    uploadService.chunk("/admin/playlist/" + props.playlist.id.toString() + "/file", videoFile.value,
+        // Progress
+        percent => {
+            progress.value = percent;
+            //console.log(progress.value)
+        },
+        err => {
+            console.log(err);
+        },
+        // Success
+        res => {
+            console.log('uploaded')
+            progress.value = 0
+            startedUploading.value = false
+            router.reload()
+        },
+        // Error
+    );
+}
 </script>
 
 <template>
@@ -70,12 +104,31 @@ function videoChanged(e) {
             </a>
         </div>
 
-        <form class="upload-demo flex flex-row" method="POST" enctype="multipart/form-data" :action="`/admin/playlist/${playlist.id}/file`" id="videoForm">
-            <label for="videoInput" class="custom-video-input font-normal mr-6">Выбрать видео</label>
-            <input accept="video/*" type="file" name="file" class="font-normal video-input" id="videoInput" @change="videoChanged">
-            <button type="submit" class="font-normal text-white rounded-3xl text-center pl-5 pr-5 h-8" style="background-color: #409EFF">Загрузить видео</button>
-        </form>
+        <div class="upload-demo flex flex-row" id="videoForm">
+            <!--
+            <div v-bind="getRootProps()">
+                <label for="videoInput" class="custom-video-input font-normal mr-6">Перетащите видео сюда или нажмите, чтобы выбрать</label>
+                <input accept="video/*" type="file" name="file" class="font-normal video-input" id="videoInput" v-bind="getInputProps()">
+            </div>
+            -->
+            <el-upload drag :on-change="onDrop" :auto-upload="false">
+                <el-icon class="el-icon--upload">
+                    <Icons.UploadFilled />
+                </el-icon>
+                <div class="el-upload__text">
+                    Переместите или <em>выберите файл</em>
+                </div>
+            </el-upload>
+            <button v-on:click="uploadVideo" class="font-normal text-white rounded-3xl text-center pl-5 pr-5 h-8" style="background-color: #409EFF">Загрузить видео</button>
+        </div>
         <span style="font-size: 12px">{{selectedVideoName}}</span>
+        <el-progress
+            :text-inside="true"
+            :stroke-width="20"
+            :percentage=progress
+            v-if="startedUploading"
+        />
+        <p v-if="startedUploading">Процесс начался</p>
     </section>
     </body>
 </template>
