@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PlaylistController;
@@ -9,17 +10,20 @@ use App\Http\Controllers\UploadFileController;
 use App\Http\Controllers\VideoController;
 use App\Models\Device;
 use App\Models\Group;
+use App\Models\Playlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Socialite\Facades\Socialite;
 
 //Сторона устройства
 
-Route::get('/', function (Request $request) {
+Route::get('/', function () {
     $deviceId = Cookie::get('device_id');
-    $device = $deviceId === null ? Device::query()->create() : Device::firstOrCreate([
+    $device = Device::firstOrCreate([
         'id' => $deviceId
     ]);
 
@@ -35,13 +39,44 @@ Route::get('/', function (Request $request) {
         'videos' => $device->playlist ? $device->playlist->getMedia('*') : []
     ]);
 });
+
 Route::get('/add-device', [DeviceController::class, 'store']);
 //Route::get('/devices/{device}/playlist', [DeviceController::class, 'getPlaylist'])->name('device.playlist');
 
 
+//АВТОРИЗАЦИЯ
+Route::get('/login', function () {
+    return Inertia::render('Authorize', [
+        'botId' => 7767854254,
+        'failedAuth' => false,
+    ]);
+})->name('login');
+
+Route::get('login/telegram', [AuthController::class, 'telegram'])->name('login.telegram');
+Route::get('login/telegram/redirect', [AuthController::class, 'telegramRedirect']);
+
+Route::get('/logout', function () {
+    if (Auth::check()) {
+        Auth::logout();
+        return redirect('login');
+    }
+    else return redirect()->back();
+})->name('logout');
+
+
 
 //Сторона админки
-Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/admin', function () {
+    if (Auth::check()) {
+        return Inertia::render('AdminIndex', [
+            'playlists' => Playlist::query()->latest()->take(5)->get(),
+            'devices' => Device::query()->latest()->take(5)->get()
+        ]);
+    }
+    else {
+        return redirect('login');
+    }
+})->name('admin');
 
 Route::prefix('/admin')->name('admin.')->group(function () {
     Route::resource('playlist', PlaylistController::class);

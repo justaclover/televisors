@@ -124,7 +124,8 @@ return [
     ],
 
 //    'providers' => [
-//        ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
+//        //ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
+//        SocialiteProviders\Manager\ServiceProvider::class,
 //    ],
 //
 //    'aliases' => [

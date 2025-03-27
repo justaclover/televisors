@@ -12,15 +12,13 @@ const props = defineProps({
 });
 
 onMounted(() => {
-    document.cookie = `device_id=${props.device_id}`;
+    const expires = (new Date(Date.now()+ 86400*10000000)).toUTCString();
+    document.cookie = `device_id=${props.device_id}; expires=` + expires;
 });
 
 // usePoll(2000);
     usePoll(4000, {
         onFinish() {
-            if (document.cookie.at((document.cookie.split('=')).indexOf('device_id') + 1) != props.device_id.toString()) {
-                document.cookie = `device_id=${props.device_id}`;
-            }
             console.log('Polling request finished')
             console.log(props.videos)
         }
@@ -77,6 +75,7 @@ onMounted(() => {
         justify-content: center;
         align-content: center;
         align-self: center;
+        margin-top: 8%;
     }
 
     .empty h1 {

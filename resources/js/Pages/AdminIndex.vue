@@ -28,9 +28,9 @@ console.log(props.playlists)
         </template>
     </draggable>
     -->
-    <div class="ml-32 pt-20 flex flex-row gap-8 max-w-full">
+    <div class="ml-32 pt-20 mb-10 flex flex-row gap-8 max-w-full">
         <a :href="`/admin/playlist`" class="w-4/12">
-            <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Плейлисты</h2>
+            <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white text-center">Плейлисты</h2>
 
             <template v-for="item in playlists" class="mb-10">
                 <a  :href="`/admin/playlist/${item.id}`" class="mb-4 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -40,13 +40,14 @@ console.log(props.playlists)
                     <p class="font-normal text-gray-700 dark:text-gray-400">Количество видео: {{item.video_count}}</p>
                 </a>
             </template>
-            <div class="flex justify-center align-middle max-w-sm">
+            <div class="flex justify-center align-middle flex-row gap-2 max-w-sm">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Добавить</h5>
                 <el-icon color="#409EFF" :size="40"><CirclePlusFilled /></el-icon>
             </div>
         </a>
 
         <a :href="`/admin/device`" class="w-4/12">
-            <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Устройства</h2>
+            <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white text-center">Устройства</h2>
 
             <template v-for="item in devices">
                 <a  :href="`/admin/device/${item.id}`" class="mb-4 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -59,6 +60,7 @@ console.log(props.playlists)
             </template>
         </a>
     </div>
+    <el-link type="primary" :href="`/logout`" class="ml-32 mb-6">Выйти из аккаунта</el-link>
 </template>
 
 <style scoped>
