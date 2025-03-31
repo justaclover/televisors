@@ -66,19 +66,21 @@ Route::get('/logout', function () {
 
 
 //Сторона админки
-Route::get('/admin', function () {
-    if (Auth::check()) {
+Route::get('/admin',
+    function () {
+//    if (Auth::check()) {
         return Inertia::render('AdminIndex', [
             'playlists' => Playlist::query()->latest()->take(5)->get(),
             'devices' => Device::query()->latest()->take(5)->get()
         ]);
-    }
-    else {
-        return redirect('login');
-    }
-})->name('admin');
+//    }
+//    else {
+//        return redirect('login');
+//    }
+}
+)->name('admin')->middleware('auth');
 
-Route::prefix('/admin')->name('admin.')->group(function () {
+Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('playlist', PlaylistController::class);
     Route::resource('device', DeviceController::class);
     Route::resource('group', GroupController::class);
