@@ -31,7 +31,7 @@ class Playlist extends Model implements HasMedia
 
     protected $appends = [
         'video_count',
-        'devices_id'
+        'devices_array'
     ];
 
     public function getVideoCountAttribute()
@@ -41,9 +41,9 @@ class Playlist extends Model implements HasMedia
         });
     }
 
-    public function getDevicesIdAttribute(): array
+    public function getDevicesArrayAttribute()
     {
-        return $this->devices()->pluck('id')->toArray();
+        return $this->devices();
     }
 
     public function updateVideoCount()

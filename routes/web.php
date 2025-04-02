@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 
-//Сторона устройства
-
+/**
+ * Сторона устройства
+**/
 Route::get('/', function () {
     $deviceId = Cookie::get('device_id');
     $device = Device::firstOrCreate([
@@ -44,7 +45,8 @@ Route::get('/add-device', [DeviceController::class, 'store']);
 //Route::get('/devices/{device}/playlist', [DeviceController::class, 'getPlaylist'])->name('device.playlist');
 
 
-//АВТОРИЗАЦИЯ
+/** Авторизация */
+
 Route::get('/login', function () {
     return Inertia::render('Authorize', [
         'botId' => 7767854254,
@@ -53,7 +55,7 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('login/telegram', [AuthController::class, 'telegram'])->name('login.telegram');
-Route::get('login/telegram/redirect', [AuthController::class, 'telegramRedirect']);
+//Route::get('login/telegram/redirect', [AuthController::class, 'telegramRedirect']);
 
 Route::get('/logout', function () {
     if (Auth::check()) {
@@ -65,18 +67,15 @@ Route::get('/logout', function () {
 
 
 
-//Сторона админки
+/**
+ * Сторона администратора
+**/
 Route::get('/admin',
     function () {
-//    if (Auth::check()) {
         return Inertia::render('AdminIndex', [
             'playlists' => Playlist::query()->latest()->take(5)->get(),
             'devices' => Device::query()->latest()->take(5)->get()
         ]);
-//    }
-//    else {
-//        return redirect('login');
-//    }
 }
 )->name('admin')->middleware('auth');
 
@@ -87,6 +86,12 @@ Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/playlist/{playlist}/file', [UploadFileController::class, 'upload']);
     Route::get('/device/{device}/playlist/attach/{playlist}', [PlaylistController::class, 'attach']);
     Route::get('/device/{device}/playlist/detach', [PlaylistController::class, 'detach']);
+    Route::get('/drag', function () {
+        return Inertia::render('Drag', [
+            'playlists' => Playlist::all(),
+            'devices' => Device::query()->where('playlist_id', '=', 'null')->get(),
+        ]);
+    });
 });
 
 Route::resource('file', FileController::class);
