@@ -1,26 +1,63 @@
-name: Deploy
-
-on:
-  push:
-    branches:
-      - master
+on: push
+name: Deploy laravel app
 
 jobs:
-  deploy:
+  update:
     runs-on: ubuntu-latest
-
+    env:
+      COMPOSER_ALLOW_SUPERUSER: 1
     steps:
-      # Шаг 1: Получить код из репозитория
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Шаг 2: Установить SSH-ключ для доступа к серверу
-#      - name: Add SSH key
-#        uses: webfactory/ssh-agent@v0.7.0
-#        with:
-#          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # Шаг 3: Развернуть код на сервере
-      - name: Deploy to server
-        run: |
-          ssh ubuntuuser@81.94.159.238 'cd /home/ubuntuuser/televisors && git pull origin main'
+      - name: Update
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ssh_address }}
+          username: ${{ secrets.ssh_name }}
+          password: ${{ secrets.ssh_password }}
+          port: 22
+          script: |
+            cd /app/televisors
+            git restore .
+            git pull
+            php artisan down
+            composer install
+      - name: Up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ssh_address }}
+          username: ${{ secrets.ssh_name }}
+          password: ${{ secrets.ssh_password }}
+          port: 22
+          script: |
+            cd /app/televisors
+            php artisan migrate --no-interaction --graceful --isolated --force
+            php artisan cache:clear
+            php artisan config:cache
+            npm install
+            npm run build
+            supervisorctl restart tv
+            php artisan up
+#
+#on:
+#  push:
+#    branches:
+#      - master
+#
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      # Шаг 1: Получить код из репозитория
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      # Шаг 2: Установить SSH-ключ для доступа к серверу
+##      - name: Add SSH key
+##        uses: webfactory/ssh-agent@v0.7.0
+##        with:
+##          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+#
+#      # Шаг 3: Развернуть код на сервере
+#      - name: Deploy to server
+#        run: |
+#          ssh ubuntuuser@81.94.159.238 'cd /home/ubuntuuser/televisors && git pull origin main'

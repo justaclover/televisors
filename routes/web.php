@@ -49,7 +49,8 @@ Route::get('/add-device', [DeviceController::class, 'store']);
 
 Route::get('/login', function () {
     return Inertia::render('Authorize', [
-        'botId' => 7767854254,
+        //'botId' => 7767854254,
+        'botId' => 8085189188,
         'failedAuth' => false,
     ]);
 })->name('login');

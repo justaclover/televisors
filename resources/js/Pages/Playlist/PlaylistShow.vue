@@ -8,6 +8,8 @@ import { uploadService } from 'vuejs-chunks-upload';
 
 const props = defineProps({videos: Array, playlist: Object, done: Number})
 
+const allowedFileTypes = ref('video/mp4, video/webm, video/mpeg, video/ogg');
+
 const selectedVideoName = ref("Файл не выбран")
 const videoFile = ref()
 const progress = ref(0)
@@ -111,7 +113,7 @@ function uploadVideo(){
                 <input accept="video/*" type="file" name="file" class="font-normal video-input" id="videoInput" v-bind="getInputProps()">
             </div>
             -->
-            <el-upload drag :on-change="onDrop" :auto-upload="false">
+            <el-upload drag :on-change="onDrop" :auto-upload="false" accept="video/mp4, video/webm, video/mpeg, video/ogg">
                 <el-icon class="el-icon--upload">
                     <Icons.UploadFilled />
                 </el-icon>

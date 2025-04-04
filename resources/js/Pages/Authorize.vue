@@ -2,7 +2,7 @@
 const {botId} = defineProps({
     botId: {
         type: Number,
-        default: 7759412726
+        default: 8085189188
     },
     failedAuth: Boolean
 });

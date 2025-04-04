@@ -2,7 +2,6 @@
 import {usePoll} from '@inertiajs/vue3'
 import {computed, reactive, onMounted, ref, onErrorCaptured} from 'vue'
 import { router } from '@inertiajs/vue3'
-import { VideoPlayer } from '@videojs-player/vue'
 import 'video.js/dist/video-js.css'
 
 const props = defineProps({
