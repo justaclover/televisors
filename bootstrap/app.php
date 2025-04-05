@@ -24,6 +24,11 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+//        $exceptions->render(function (\League\Flysystem\CorruptedPathDetected $exception) {
+//            return redirect()->back()->withCookie(cookie(''));
+//        });
+//        $exceptions->render(function (\Symfony\Component\HttpFoundation\File\Exception\FileException $exception) {
+//            return redirect()->back();
+//        });
     })->create();
 

@@ -2,11 +2,11 @@
 import {Link, router} from "@inertiajs/vue3";
 import {Delete, Picture as IconPicture} from '@element-plus/icons-vue'
 import * as Icons from '@element-plus/icons-vue';
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import { useDropzone } from "vue3-dropzone";
 import { uploadService } from 'vuejs-chunks-upload';
 
-const props = defineProps({videos: Array, playlist: Object, done: Number})
+const props = defineProps({videos: Array, playlist: Object, done: Number, newFile: File})
 
 const allowedFileTypes = ref('video/mp4, video/webm, video/mpeg, video/ogg');
 
@@ -18,12 +18,21 @@ const startedUploading = ref(false)
 const nameInput = ref(props.playlist.name)
 const commentInput = ref(props.playlist.comment)
 
+
+onMounted(() => {
+    console.log(props)
+    if (props.newFile != null){
+        console.log(props)
+        console.log(props.newFile)
+        //onDrop(props.newFile);
+    }
+})
+
 function onDrop(f, rejectReasons) {
-    console.log(f.raw);
-    // selectedVideoName.value = acceptFiles[0].name;
+    //console.log(f.raw);
     videoFile.value = f.raw;
-    // console.log(getInputProps)
-    // console.log(getRootProps)
+    //Object.defineProperty(videoFile.value, "name", {value: "#\\p{C}+#u"})
+    console.log(videoFile.value.name);
 }
 
 const { getRootProps, getInputProps, ...rest } = useDropzone({ onDrop });
@@ -43,7 +52,7 @@ function updatePlaylist() {
 }
 
 function uploadVideo(){
-    console.log(videoFile.value)
+    //console.log(videoFile.value)
 
     startedUploading.value = true
     uploadService.chunk("/admin/playlist/" + props.playlist.id.toString() + "/file", videoFile.value,
@@ -53,7 +62,10 @@ function uploadVideo(){
             //console.log(progress.value)
         },
         err => {
-            console.log(err);
+            console.log(err.response.data.new_filename)
+            Object.defineProperty(videoFile.value, "name", {value: err.response.data.new_filename})
+            console.log(videoFile.value)
+            uploadVideo()
         },
         // Success
         res => {

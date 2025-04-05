@@ -7,6 +7,7 @@ use App\Models\Device;
 use App\Models\Playlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Inertia\Inertia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -50,26 +51,28 @@ class PlaylistController extends Controller
         ]);
     }
 
-    public function upload(Request $request, Playlist $playlist)
-    {
-        $request->validate([
-            'file' => 'required|file|mimes:mp4,webm,mov'
-        ]);
-        $playlist->addMediaFromRequest('file')->toMediaCollection();
-//        Cache::forget('video_count' . $playlist->id);
-//        Cache::put('video_count' . $playlist->id, $playlist->getMedia('*')->count());
-        $playlist->updateVideoCount();
-        return back();
-    }
+//    public function upload(Request $request, Playlist $playlist)
+//    {
+//        $request->validate([
+//            'file' => 'required|file|mimes:mp4,webm,mov'
+//        ]);
+//        $playlist->addMediaFromRequest('file')->toMediaCollection();
+////        Cache::forget('video_count' . $playlist->id);
+////        Cache::put('video_count' . $playlist->id, $playlist->getMedia('*')->count());
+//        $playlist->updateVideoCount();
+//        return back();
+//    }
 
     /**
      * Display the specified resource.
      */
     public function show(Playlist $playlist)
     {
+        $newFile = session()->get('newFile');
         return Inertia::render('Playlist/PlaylistShow', [
             'playlist' => $playlist,
-            'videos' => $playlist->getMedia('*')
+            'videos' => $playlist->getMedia('*'),
+            'newFile' => $newFile
         ]);
     }
 
