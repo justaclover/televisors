@@ -1,4 +1,23 @@
 <script setup>
+import Keycloak from 'keycloak-js';
+
+const keycloak = new Keycloak({
+    url: "https://auth.kioskapi.ru/",
+    realm: "master",
+    clientId: "tv"
+});
+
+try {
+    const authenticated = await keycloak.init();
+    if (authenticated) {
+        console.log('User is authenticated');
+    } else {
+        console.log('User is not authenticated');
+    }
+} catch (error) {
+    console.error('Failed to initialize adapter:', error);
+}
+
 const {botId} = defineProps({
     botId: {
         type: Number,
@@ -39,6 +58,8 @@ function openTelegramWindow() {
     // Добавляем обработчик сообщений
     window.addEventListener('message', handleMessage);
 }
+
+
 </script>
 
 <template>

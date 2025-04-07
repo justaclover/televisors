@@ -56,6 +56,7 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('login/telegram', [AuthController::class, 'telegram'])->name('login.telegram');
+Route::get('login/keycloak', [AuthController::class, 'keycloak'])->name('login.keycloak');
 //Route::get('login/telegram/redirect', [AuthController::class, 'telegramRedirect']);
 
 Route::get('/logout', function () {

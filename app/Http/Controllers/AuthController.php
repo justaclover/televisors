@@ -28,4 +28,40 @@ class AuthController extends Controller
         }
 
     }
+
+    public function keycloak()
+    {
+        if (Auth::user()){
+            return redirect('admin');
+        }
+        return Socialite::driver('keycloak')->stateless()->redirect();
+    }
+
+    public function keycloackCallback()
+    {
+        $requestUser = Socialite::driver('keycloak')->stateless()->user();
+//        $user = User::updateOrCreate(['keycloack_id' => $requestUser->id], [
+//            'name' => $requestUser->name,
+//            'email' => $requestUser->email,
+//        ]);
+
+        if (User::where('keycloack_id',$requestUser->id)->exists()) {
+            $user = User::updateOrCreate(['keycloack_id' => $requestUser->id], [
+                'name' => $requestUser->name,
+                'email' => $requestUser->email,
+            ]);;
+            Auth::login($user, true);
+
+            return redirect('admin');
+        }
+        else {
+            return Inertia::render('Authorize', [
+                'botId' => 7767854254,
+                'failedAuth' => true,
+            ]);
+        }
+
+        Auth::login($user, true);
+        return redirect('admin');
+    }
 }

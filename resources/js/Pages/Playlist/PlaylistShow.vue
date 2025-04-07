@@ -63,6 +63,7 @@ function uploadVideo(){
         },
         err => {
             console.log(err.response.data.new_filename)
+            alert("Имя файла некорректно! Оно будет изменено на " + err.response.data.new_filename)
             Object.defineProperty(videoFile.value, "name", {value: err.response.data.new_filename})
             console.log(videoFile.value)
             uploadVideo()
