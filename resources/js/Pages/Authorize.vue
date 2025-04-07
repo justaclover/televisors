@@ -1,22 +1,18 @@
 <script setup>
 import Keycloak from 'keycloak-js';
 
-const keycloak = new Keycloak({
-    url: "https://auth.kioskapi.ru/",
-    realm: "master",
-    clientId: "tv"
-});
-
-try {
-    const authenticated = await keycloak.init();
-    if (authenticated) {
-        console.log('User is authenticated');
-    } else {
-        console.log('User is not authenticated');
-    }
-} catch (error) {
-    console.error('Failed to initialize adapter:', error);
-}
+// const keycloak = new Keycloak({
+//     url: "https://auth.kioskapi.ru/",
+//     realm: "master",
+//     clientId: "tv"
+// });
+//
+// const authenticated = await keycloak.init();
+// if (authenticated) {
+//     console.log('User is authenticated');
+// } else {
+//     console.log('User is not authenticated');
+// }
 
 const {botId} = defineProps({
     botId: {
@@ -58,8 +54,6 @@ function openTelegramWindow() {
     // Добавляем обработчик сообщений
     window.addEventListener('message', handleMessage);
 }
-
-
 </script>
 
 <template>
@@ -82,14 +76,26 @@ function openTelegramWindow() {
                 </template>
             </el-button>
         </a>
-        <el-button @click="openTelegramWindow" class="telegram-login-button" v-else>
-            <template #default>
-                <el-avatar class="telegram-icon"/>
-                <span class="telegram-text">
+        <div v-else class="flex flex-col gap-5">
+            <el-button @click="openTelegramWindow" class="telegram-login-button">
+                <template #default>
+                    <el-avatar class="telegram-icon"/>
+                    <span class="telegram-text">
                 Войти через Телеграм
             </span>
-            </template>
-        </el-button>
+                </template>
+            </el-button>
+
+            <a href="/login/keycloak">
+                <el-button class="telegram-login-button">
+                    <template #default>
+                    <span class="telegram-text">
+                Войти через SSO
+            </span>
+                    </template>
+                </el-button>
+            </a>
+        </div>
     </div>
 </template>
 

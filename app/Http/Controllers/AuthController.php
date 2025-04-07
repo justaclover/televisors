@@ -37,7 +37,7 @@ class AuthController extends Controller
         return Socialite::driver('keycloak')->stateless()->redirect();
     }
 
-    public function keycloackCallback()
+    public function keycloakCallback()
     {
         $requestUser = Socialite::driver('keycloak')->stateless()->user();
 //        $user = User::updateOrCreate(['keycloack_id' => $requestUser->id], [

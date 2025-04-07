@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
             $event->extendSocialite('telegram', Provider::class);
+            $event->extendSocialite('keycloak', Provider::class);
         });
 
     }
