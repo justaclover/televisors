@@ -54,11 +54,12 @@ class AuthController extends Controller
         $groups = $decoded->groups;
 
         if (in_array("Developer", $groups) || in_array("IT", $groups)) {
-//            $user = User::updateOrCreate(['keycloack_id' => $requestUser->id], [
-//                'name' => $requestUser->name,
-//                'email' => $requestUser->email,
-//            ]);;
-            Auth::login($requestUser, true);
+            $user = User::updateOrCreate(['keycloack_id' => $requestUser->id], [
+                'name' => $requestUser->name,
+                'username' => $requestUser->username,
+                'email' => $requestUser->email,
+            ]);;
+            Auth::login($user, true);
 
             return redirect('admin');
         }
@@ -69,7 +70,5 @@ class AuthController extends Controller
             ]);
         }
 
-        Auth::login($user, true);
-        return redirect('admin');
     }
 }
