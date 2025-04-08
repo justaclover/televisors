@@ -75,19 +75,24 @@ class AuthController extends Controller
 
     public function logout()
     {
-        $token = Auth::user()->getRememberToken();
-        $keycloakLogoutUrl = config('services.keycloak.base_url')
-            . '/realms/' . config('services.keycloak.realms')
-            . '/protocol/openid-connect/logout';
-        $params = [
-            'id_token_hint' => $token,
-            'post_logout_redirect_uri' => url('/login'), // URL для перенаправления после логаута
-        ];
+        if (Auth::check()){
+            $token = Auth::user()->getRememberToken();
+            $keycloakLogoutUrl = config('services.keycloak.base_url')
+                . '/realms/' . config('services.keycloak.realms')
+                . '/protocol/openid-connect/logout';
+            $params = [
+                'id_token_hint' => $token,
+                'post_logout_redirect_uri' => url('/login'), // URL для перенаправления после логаута
+            ];
 
-        Auth::logout();
-        request()->session()->invalidate();
+            Auth::logout();
+            request()->session()->invalidate();
 
-        return redirect($keycloakLogoutUrl . '?' . http_build_query($params));
+            return redirect($keycloakLogoutUrl . '?' . http_build_query($params));
+        }
+        else {
+            return redirect()->back();
+        }
     }
 
 }

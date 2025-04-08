@@ -59,16 +59,7 @@ Route::get('login/telegram', [AuthController::class, 'telegram'])->name('login.t
 Route::get('login/keycloak', [AuthController::class, 'keycloak'])->name('login.keycloak');
 Route::get('/auth/sso/callback', [AuthController::class, 'keycloakCallback']);
 //Route::get('login/telegram/redirect', [AuthController::class, 'telegramRedirect']);
-
-Route::get('/logout', function () {
-    if (Auth::check()) {
-        Auth::logout();
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
-        return redirect('login');
-    }
-    else return redirect()->back();
-})->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 
