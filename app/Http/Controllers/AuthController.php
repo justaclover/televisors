@@ -38,8 +38,6 @@ class AuthController extends Controller
         if (Auth::user()){
             return redirect('admin');
         }
-        Auth::logout();
-        request()->session()->invalidate();
         return Socialite::driver('keycloak')->stateless()->redirect();
     }
 
@@ -54,11 +52,14 @@ class AuthController extends Controller
         $groups = $decoded->groups;
 
         if (in_array("Developer", $groups) || in_array("IT", $groups)) {
-            $user = User::updateOrCreate(['keycloack_id' => $requestUser->id], [
+            $user = User::updateOrCreate(['keycloak_id' => $requestUser->id], [
                 'name' => $requestUser->name,
                 'username' => $requestUser->username,
                 'email' => $requestUser->email,
-            ]);;
+            ]);
+            if ($requestUser->tg_id) {
+                $user->update(['telegram_id' => $requestUser->tg_id]);
+            }
             Auth::login($user, true);
 
             return redirect('admin');
@@ -71,4 +72,22 @@ class AuthController extends Controller
         }
 
     }
+
+    public function logout()
+    {
+        $token = Auth::user()->getRememberToken();
+        $keycloakLogoutUrl = config('services.keycloak.base_url')
+            . '/realms/' . config('services.keycloak.realms')
+            . '/protocol/openid-connect/logout';
+        $params = [
+            'id_token_hint' => $token,
+            'post_logout_redirect_uri' => url('/login'), // URL для перенаправления после логаута
+        ];
+
+        Auth::logout();
+        request()->session()->invalidate();
+
+        return redirect($keycloakLogoutUrl . '?' . http_build_query($params));
+    }
+
 }

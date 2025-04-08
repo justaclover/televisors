@@ -63,6 +63,8 @@ Route::get('/auth/sso/callback', [AuthController::class, 'keycloakCallback']);
 Route::get('/logout', function () {
     if (Auth::check()) {
         Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
         return redirect('login');
     }
     else return redirect()->back();
