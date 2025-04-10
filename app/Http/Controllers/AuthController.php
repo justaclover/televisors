@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 use PHPUnit\Framework\Exception;
+use Illuminate\Http\Client\ConnectionException;
 
 class AuthController extends Controller
 {
@@ -46,21 +48,22 @@ class AuthController extends Controller
     {
         try {
             $requestUser = Socialite::driver('keycloak')->stateless()->user()->user;
-            $user = User::updateOrCreate(['keycloak_id' => $requestUser->sub], [
-                'name' => $requestUser->name,
-                'username' => $requestUser->preferred_username,
-                'email' => $requestUser->email,
-            ]);
-            if (Arr::exists($requestUser, 'tg_id')) {
-                $user->update(['telegram_id' => intval(Arr::get($requestUser, 'tg_id'))]);
-            }
-            Auth::login($user, true);
-
-            return redirect('admin');
         }
-        catch (Exception $e) {
+        catch (RequestException $e) {
             return redirect('login');
         }
+
+        $user = User::updateOrCreate(['keycloak_id' => $requestUser['sub']], [
+            'name' => $requestUser['name'],
+            'username' => $requestUser['preferred_username'],
+            'email' => $requestUser['email'],
+        ]);
+        if (Arr::exists($requestUser, 'tg_id')) {
+            $user->update(['telegram_id' => intval(Arr::get($requestUser, 'tg_id'))]);
+        }
+        Auth::login($user, true);
+
+        return redirect('admin');
         //dd(json_encode($requestUser, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 //        $token = $requestUser->token;
 //
