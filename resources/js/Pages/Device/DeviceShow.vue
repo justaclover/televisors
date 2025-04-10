@@ -9,9 +9,16 @@ const props = defineProps({
     videos: Array,
     currentPlaylist: Object})
 
+console.log(props.device)
+
 const nameInput = ref(props.device.name)
 const commentInput = ref(props.device.comment)
 const locationInput = ref(props.device.location)
+
+const muteChecked = ref(Boolean(Number(props.device.muted)))
+const muteLabelsArray = {"true": "Включить звук на устройстве", "false": "Выключить звук на устройстве"}
+const muteLabel = ref(muteLabelsArray[String(muteChecked.value)])
+
 
 let playlistSelection
 
@@ -55,6 +62,19 @@ function setPlaylist() {
             console.log(e)
         })
 }
+
+function muteChange() {
+    axios.get('/admin/device/' + props.device.id.toString() + '/mutechange')
+        .then(response => {
+            console.log(muteChecked.value)
+            router.get('/admin/device/' + props.device.id.toString(), {}, {
+                only: ['device']
+            })
+        })
+        .catch(e => {
+            console.log(e)
+        })
+}
 </script>
 
 <template>
@@ -86,6 +106,10 @@ function setPlaylist() {
                         </select>
                     </div>
                     <el-button type="primary" @click="setPlaylist" round>Назначить плейлист</el-button>
+                </div>
+
+                <div class="flex flex-row gap-5 mb-16">
+                    <el-checkbox-button v-model="muteChecked" v-on:change="muteChange">{{ muteLabel }}</el-checkbox-button>
                 </div>
 
                 <div class="mb-14">

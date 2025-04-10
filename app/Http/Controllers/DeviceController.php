@@ -79,4 +79,12 @@ class DeviceController extends Controller
         return back();
     }
 
+    public function muteChange(Device $device)
+    {
+        $muted = $device->muted === 0 ? 1 : 0;
+        $device->update(['muted' => $muted]);
+
+        return redirect()->route('admin.device.show', $device);
+    }
+
 }

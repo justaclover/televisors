@@ -6,6 +6,7 @@ import 'video.js/dist/video-js.css'
 
 const props = defineProps({
     device_id: Number,
+    muted: Boolean,
     videos: Array
     // readyForVideos: Boolean
 });
@@ -63,7 +64,8 @@ onMounted(() => {
 
         <div v-else class="video-container">
             <!--<video-player src="http://127.0.0.1:8000/storage/1/WIN_20250131_16_44_39_Pro.mp4" autoplay preload="auto" muted/>-->
-            <video :src="videoUrl" preload="auto" autoplay ref="videoPlayer" muted v-on:ended="changeVideo" :style="videoStyle"/>
+            <video v-if="muted" :src="videoUrl" preload="auto" muted autoplay ref="videoPlayer" v-on:ended="changeVideo" :style="videoStyle"/>
+            <video v-else :src="videoUrl" preload="auto" autoplay ref="videoPlayer" v-on:ended="changeVideo" :style="videoStyle"/>
         </div>
     </section>
 </template>

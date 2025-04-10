@@ -37,6 +37,7 @@ Route::get('/', function () {
 
     return Inertia::render('Index', [
         'device_id' => $device->id,
+        'muted' => $device->muted,
         'videos' => $device->playlist ? $device->playlist->getMedia('*') : []
     ]);
 });
@@ -82,6 +83,7 @@ Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/playlist/{playlist}/file', [UploadFileController::class, 'upload']);
     Route::get('/device/{device}/playlist/attach/{playlist}', [PlaylistController::class, 'attach']);
     Route::get('/device/{device}/playlist/detach', [PlaylistController::class, 'detach']);
+    Route::get('/device/{device}/mutechange', [DeviceController::class, 'muteChange']);
     Route::get('/drag', function () {
         return Inertia::render('Drag', [
             'playlists' => Playlist::all(),

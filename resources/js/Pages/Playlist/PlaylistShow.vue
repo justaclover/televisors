@@ -8,12 +8,13 @@ import { uploadService } from 'vuejs-chunks-upload';
 
 const props = defineProps({videos: Array, playlist: Object, done: Number, newFile: File})
 
-const allowedFileTypes = ref('video/mp4, video/webm, video/mpeg, video/ogg');
+const allowedFileTypes = ['video/mp4', 'video/webm', 'video/mpeg', 'video/ogg'];
 
 const selectedVideoName = ref("Файл не выбран")
 const videoFile = ref()
 const progress = ref(0)
 const startedUploading = ref(false)
+const uploadRef = ref()
 
 const nameInput = ref(props.playlist.name)
 const commentInput = ref(props.playlist.comment)
@@ -31,8 +32,13 @@ onMounted(() => {
 function onDrop(f, rejectReasons) {
     //console.log(f.raw);
     videoFile.value = f.raw;
+    console.log(videoFile.value.type);
+    console.log(allowedFileTypes);
+    if (!(allowedFileTypes.includes(videoFile.value.type))){
+        alert("Файл не поддерживаемого формата!")
+        uploadRef.value.clearFiles()
+    }
     //Object.defineProperty(videoFile.value, "name", {value: "#\\p{C}+#u"})
-    console.log(videoFile.value.name);
 }
 
 const { getRootProps, getInputProps, ...rest } = useDropzone({ onDrop });
@@ -62,7 +68,7 @@ function uploadVideo(){
             //console.log(progress.value)
         },
         err => {
-            console.log(err.response.data.new_filename)
+            console.log(err.response)
             alert("Имя файла некорректно! Оно будет изменено на " + err.response.data.new_filename)
             Object.defineProperty(videoFile.value, "name", {value: err.response.data.new_filename})
             console.log(videoFile.value)
@@ -73,6 +79,7 @@ function uploadVideo(){
             console.log('uploaded')
             progress.value = 0
             startedUploading.value = false
+            uploadRef.value.clearFiles()
             router.reload()
         },
         // Error
