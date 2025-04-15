@@ -87,4 +87,12 @@ class DeviceController extends Controller
         return redirect()->route('admin.device.show', $device);
     }
 
+    public function setPing(Device $device)
+    {
+        $lastOnlineAt = now()->format('Y-m-d H:i:s');
+        $device->update(['last_online_at' => $lastOnlineAt]);
+
+        return $device->last_online_at;
+    }
+
 }

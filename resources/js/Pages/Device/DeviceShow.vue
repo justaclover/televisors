@@ -82,15 +82,14 @@ function muteChange() {
     <el-link type="primary" :href="`/admin/device`" class="mb-6">Назад</el-link>
 
     <section class="flex gap-20 flex-col">
-        <div class="flex flex-row gap-14">
-            <div class="flex flex-col gap-10">
+        <div class="flex flex-col gap-10">
+            <div class="flex flex-row gap-14">
                 <h2 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Id: {{device.id}}</h2>
-                <p class="font-normal text-gray-700 dark:text-gray-400">Комментарий: {{device.comment}}</p>
-            </div>
-            <div class="flex flex-col gap-10">
                 <h2 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Название: {{device.name}}</h2>
-                <p class="font-normal text-gray-700 dark:text-gray-400">Местонахождение: {{device.location}}</p>
             </div>
+            <p class="font-bold text-gray-700 dark:text-gray-400">Последний раз в сети: {{device.last_online_at}}</p>
+            <p class="font-normal text-gray-700 dark:text-gray-400">Комментарий: {{device.comment}}</p>
+            <p class="font-normal text-gray-700 dark:text-gray-400">Местонахождение: {{device.location}}</p>
         </div>
 
         <div class="flex flex-row mb-14 gap-40">

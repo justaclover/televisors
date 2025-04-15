@@ -50,9 +50,18 @@ onMounted(() => {
         }
     }
 
-    onErrorCaptured((NotSupportedError) => {
-        changeVideo();
-    })
+onErrorCaptured((NotSupportedError) => {
+    changeVideo();
+})
+
+setInterval(() => {
+    axios.get('/setping/' + props.device_id.toString())
+        .then(response => {
+            console.log(response.data)
+        })
+}, 300000)
+
+
 
 </script>
 

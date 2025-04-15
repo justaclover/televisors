@@ -19,7 +19,8 @@ class Device extends Model
         'comment',
         'location',
         'playlist_id',
-        'muted'
+        'muted',
+        'last_online_at'
     ];
 
     public function playlist(): BelongsTo

@@ -9,7 +9,6 @@ const props = defineProps({
     devices: Array
 })
 
-console.log(props.playlists)
 </script>
 
 <template>
@@ -50,9 +49,9 @@ console.log(props.playlists)
             <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white text-center">Устройства</h2>
 
             <template v-for="item in devices">
-                <a  :href="`/admin/device/${item.id}`" class="mb-4 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-
+                <a  :href="`/admin/device/${item.id}`" class="mb-4 block max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{item.id}}</h5>
+                    <p class="font-bold text-gray-700 dark:text-gray-400">Последний раз в сети: {{item.last_online_at}}</p>
                     <p class="font-normal text-gray-700 dark:text-gray-400">Название: {{item.name}}</p>
                     <p class="font-normal text-gray-700 dark:text-gray-400">Комментарий: {{item.comment}}</p>
                     <p class="font-normal text-gray-700 dark:text-gray-400">Местонахождение: {{item.location}}</p>

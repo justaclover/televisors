@@ -94,7 +94,4 @@ Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function () {
 
 Route::resource('file', FileController::class);
 
-// Route::post('/admin/playlists/{playlist}/video', [AdminController::class, 'storeVideo']);
-
-
-// Route::post('/admin/playlists', [AdminController::class, 'storePlaylist']);
+Route::get('/setping/{device}', [DeviceController::class, 'setPing']);
