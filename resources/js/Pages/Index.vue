@@ -3,6 +3,7 @@ import {usePoll} from '@inertiajs/vue3'
 import {computed, reactive, onMounted, ref, onErrorCaptured} from 'vue'
 import { router } from '@inertiajs/vue3'
 import 'video.js/dist/video-js.css'
+import {useAsyncState} from "@vueuse/core";
 
 const props = defineProps({
     device_id: Number,
@@ -54,14 +55,22 @@ onErrorCaptured((NotSupportedError) => {
     changeVideo();
 })
 
-setInterval(() => {
-    axios.get('/setping/' + props.device_id.toString())
-        .then(response => {
-            console.log(response.data)
-        })
-}, 300000)
+// setInterval(() => {
+//     axios.get('/setping/' + props.device_id.toString())
+//         .then(response => {
+//             console.log(response.data)
+//         })
+// }, 300000)
 
-
+const {} = useAsyncState(
+    setInterval(() => {
+        axios.get('/setping/' + props.device_id.toString())
+            .then(response => {
+                console.log(response.data)
+            })
+    }, 3000),
+    {}
+)
 
 </script>
 

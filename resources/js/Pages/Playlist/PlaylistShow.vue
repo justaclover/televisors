@@ -6,7 +6,7 @@ import {onMounted, ref} from "vue";
 import { useDropzone } from "vue3-dropzone";
 import { uploadService } from 'vuejs-chunks-upload';
 
-const props = defineProps({videos: Array, playlist: Object, done: Number, newFile: File})
+const props = defineProps({videos: Array, playlist: Object, newFile: File, thumbs: Object})
 
 const allowedFileTypes = ['video/mp4', 'video/webm', 'video/mpeg', 'video/ogg'];
 
@@ -90,6 +90,7 @@ function uploadVideo(){
 <template>
     <body class="ml-32 pt-20 pb-20">
     <el-link type="primary" :href="`/admin/playlist`" class="mb-6">Назад</el-link>
+    <img :src="thumbs" alt="">
     <section class="flex gap-3 flex-col">
         <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{{playlist.name}}</h2>
         <p class="mb-4 font-normal text-gray-700 dark:text-gray-400">Комментарий: {{playlist.comment}}</p>

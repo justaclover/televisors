@@ -72,7 +72,8 @@ class PlaylistController extends Controller
         return Inertia::render('Playlist/PlaylistShow', [
             'playlist' => $playlist,
             'videos' => $playlist->getMedia('*'),
-            'newFile' => $newFile
+            'newFile' => $newFile,
+            'thumbs' => $playlist->getMedia('*')->last()->getUrl('thumb') ?: null,
         ]);
     }
 

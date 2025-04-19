@@ -57,11 +57,11 @@ class Playlist extends Model implements HasMedia
         return $this->hasMany(Device::class);
     }
 
-    //    public function registerMediaConversions(?Media $media = null): void
-//    {
-//        $this->addMediaConversion('compress')
-//            ->width(368)
-//            ->height(232)
-//            ->format('webm');
-//    }
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(368)
+            ->height(232)
+            ->extractVideoFrameAtSecond(5);
+    }
 }
