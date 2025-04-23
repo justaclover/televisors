@@ -68,12 +68,14 @@ class PlaylistController extends Controller
      */
     public function show(Playlist $playlist)
     {
-        $newFile = session()->get('newFile');
+        $videos = $playlist->getMedia('*');
+        foreach ($videos as $video) {
+            $video->setCustomProperty('thumb_url', $video->getUrl('thumb') ?: null);
+        }
+
         return Inertia::render('Playlist/PlaylistShow', [
             'playlist' => $playlist,
-            'videos' => $playlist->getMedia('*'),
-            'newFile' => $newFile,
-            'thumbs' => $playlist->getMedia('*')->last()->getUrl('thumb') ?: null,
+            'videos' => $videos,
         ]);
     }
 

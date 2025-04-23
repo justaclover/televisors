@@ -62,6 +62,7 @@ class Playlist extends Model implements HasMedia
         $this->addMediaConversion('thumb')
             ->width(368)
             ->height(232)
-            ->extractVideoFrameAtSecond(5);
+            ->extractVideoFrameAtSecond(5)
+            ->nonQueued();
     }
 }

@@ -26,10 +26,6 @@ class UploadFileController extends Controller
 //      Cache::put('video_count' . $playlist->id, $playlist->getMedia('*')->count());
         $playlist->updateVideoCount();
         return redirect(route('admin.playlist.show', ['playlist' => $playlist]));
-//        return Inertia::render('Playlist/PlaylistShow', [
-//            'playlist' => $playlist,
-//            'videos' => $playlist->getMedia('*'),
-//        ]);
     }
 
     public function upload(Request $request, Playlist $playlist) {
