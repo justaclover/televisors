@@ -14,6 +14,12 @@ class FileController extends Controller
         return response()->download(storage_path("app/public/" . $media->getPathRelativeToRoot()));
     }
 
+    public function getThumb($uuid)
+    {
+        $media = Media::where('uuid', $uuid)->firstOrFail();
+        return response()->download(storage_path("app/public/" . $media->getPathRelativeToRoot('thumb')));
+    }
+
     public function destroy($uuid)
     {
         $media = Media::where('uuid', $uuid)->firstOrFail();

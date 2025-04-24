@@ -93,5 +93,6 @@ Route::prefix('/admin')->name('admin.')->middleware('auth')->group(function () {
 });
 
 Route::resource('file', FileController::class);
+Route::get('/file/{uuid}/thumb', [FileController::class, 'getThumb']);
 
 Route::get('/setping/{device}', [DeviceController::class, 'setPing']);

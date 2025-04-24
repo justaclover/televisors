@@ -22,13 +22,17 @@ class UploadFileController extends Controller
     protected function saveFile(UploadedFile $file, Playlist $playlist)
     {
         $playlist->addMedia($file)->toMediaCollection();
-//      Cache::forget('video_count' . $playlist->id);
-//      Cache::put('video_count' . $playlist->id, $playlist->getMedia('*')->count());
         $playlist->updateVideoCount();
         return redirect(route('admin.playlist.show', ['playlist' => $playlist]));
     }
 
     public function upload(Request $request, Playlist $playlist) {
+        if (preg_match('/[\p{Cyrillic}]/u', $request->resumableFilename)){
+            return response()->json([
+                'new_filename' => $this->generateSafeFilename($request->resumableType), // Отправляем новое имя на фронтенд
+            ], 422);
+        }
+
         $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
 
             // check if the upload is success, throw exception or return response you need
@@ -44,25 +48,30 @@ class UploadFileController extends Controller
                 // save the file and return any response you need, current example uses `move` function. If you are
                 // not using move, you need to manually delete the file by unlink($save->getFile()->getPathname())
                 return $this->saveFile($save->getFile(), $playlist);
+//                return response()->json([
+//                    'file' => $save->getFile(),
+//                ]);
             }
         }
         catch (FileException $e) {
             //return $this->retryUploadWithNewName($request, $playlist);
             return response()->json([
-                'new_filename' => $this->generateSafeFilename(), // Отправляем новое имя на фронтенд
+                'new_filename' => $this->generateSafeFilename($request->resumableType), // Отправляем новое имя на фронтенд
             ], 422);
         }
         catch (CorruptedPathDetected $e) {
             return response()->json([
-                'new_filename' => $this->generateSafeFilename(), // Отправляем новое имя на фронтенд
+                'new_filename' => $this->generateSafeFilename($request->resumableType), // Отправляем новое имя на фронтенд
             ], 422);
         }
 
     }
 
-    protected function generateSafeFilename()
+    protected function generateSafeFilename($resumableType)
     {
+        $mimetype = explode('/', $resumableType)[1];
         // Генерируем имя файла на основе текущей даты и случайной строки
-        return Carbon::now()->format('Y-m-d_H-i-s') . '_' . Str::random(8);
+        return Carbon::now()->format('Y-m-d_H-i-s') . '_' . Str::random(8) . '.' . $mimetype;
+        //return strval(rand(12, 132445));
     }
 }

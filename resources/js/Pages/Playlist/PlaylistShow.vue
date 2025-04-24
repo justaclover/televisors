@@ -70,6 +70,7 @@ function uploadVideo(){
             console.log(err)
             alert("Имя файла некорректно! Оно будет изменено на " + err.response.data.new_filename)
             Object.defineProperty(videoFile.value, "name", {value: err.response.data.new_filename})
+            console.log(videoFile.value)
             //console.log(videoFile.value)
             uploadVideo()
         },
@@ -90,7 +91,6 @@ function uploadVideo(){
 <template>
     <body class="ml-32 pt-20 pb-20">
     <el-link type="primary" :href="`/admin/playlist`" class="mb-6">Назад</el-link>
-    <img :src="thumbs" alt="">
     <section class="flex gap-3 flex-col pb-10">
         <h2 class="mb-8 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{{playlist.name}}</h2>
         <p class="mb-4 font-normal text-gray-700 dark:text-gray-400">Комментарий: {{playlist.comment}}</p>
@@ -110,7 +110,7 @@ function uploadVideo(){
             <h3 class="mb-8 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Видео</h3>
             <p class="font-normal mb-4 text-gray-700 dark:text-gray-400">Количество видео: {{playlist.video_count}}</p>
             <a v-for="i in videos" :href="`/file/${i.uuid}`" class="mb-4 relative flex items-center bg-white border border-gray-200 rounded-lg md:flex-row max-w-3xl shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                <el-image v-if="i.custom_properties.thumb_url" :fit="scale-down" :src="i.custom_properties.thumb_url" class="rounded-lg max-w-60"/>
+                <el-image v-if="i.custom_properties.thumb_url" :fit="scale-down" :src="`/file/${i.uuid}/thumb`" class="rounded-lg max-w-60"/>
                 <el-image v-else class="ml-6">
                     <template #error>
                         <div class="image-slot">
