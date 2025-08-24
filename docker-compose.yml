@@ -1,0 +1,79 @@
+services:
+    web:
+        container_name: tv_web
+        build:
+            context: ./docker/8.4-alpine
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        command: '/usr/bin/php84 /app/tv/artisan octane:start --server=roadrunner --rpc-port=6001 --host=0.0.0.0 --port=80 --workers=20'
+        image: sail-8.4/app
+        environment:
+            SUPERVISOR_PHP_USER: sail
+            # XDG_CONFIG_HOME: /var/www/html/config
+            # XDG_DATA_HOME: /var/www/html
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+        volumes:
+            - '.:/app/tv'
+        networks:
+            - app_proxy
+            - app_search
+    queue:
+        container_name: tv_queue
+        build:
+            context: ./docker/8.4-alpine
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.4/app
+        # network_mode: "service:web"
+        command: ["/bin/bash", "-c", "cd /app/tv && /usr/bin/php84 -d variables_order=EGPCS artisan queue:work"]
+        environment:
+            SUPERVISOR_PHP_USER: sail
+            # XDG_CONFIG_HOME: /var/www/html/config
+            # XDG_DATA_HOME: /var/www/html
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+        depends_on:
+            - web
+        volumes:
+            - '.:/app/tv'
+        networks:
+            - app_search
+    schedule:
+        container_name: tv_schedule
+        build:
+            context: ./docker/8.4-alpine
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.4/app
+        # network_mode: "service:web"
+        command: ["/bin/bash", "-c", "cd /app/tv && /usr/bin/php84 -d variables_order=EGPCS artisan schedule:work"]
+        environment:
+            SUPERVISOR_PHP_USER: sail
+            # XDG_CONFIG_HOME: /var/www/html/config
+            # XDG_DATA_HOME: /var/www/html
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+        depends_on:
+            - web
+        volumes:
+            - '.:/app/tv'
+        networks:
+            - app_search
+networks:
+    app_proxy:
+        external: true  # Используем существующую сеть
+    app_search:
+        external: true  # Используем существующую сеть

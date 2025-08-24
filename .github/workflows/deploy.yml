@@ -15,7 +15,7 @@ jobs:
           password: ${{ secrets.ssh_password }}
           port: 22
           script: |
-            cd /app/televisors
+            cd /app/tv
             git restore .
             git pull
             php artisan down
@@ -28,13 +28,14 @@ jobs:
           password: ${{ secrets.ssh_password }}
           port: 22
           script: |
-            cd /app/televisors
+            cd /app/tv
             php artisan migrate --no-interaction --graceful --isolated --force
             php artisan cache:clear
             php artisan config:cache
             npm install
             npm run build
-            supervisorctl restart tv
+            docker compose up -d
+            docker compose restart
             php artisan up
 #
 #on:
