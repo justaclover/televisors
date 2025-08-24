@@ -60,6 +60,7 @@ RUN apk add --no-cache \
     php84-soap \
     php84-intl \
     php84-dom \
+    php84-phar \
     php84-ldap \
     php84-msgpack \
     php84-tokenizer \
