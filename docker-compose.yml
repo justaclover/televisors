@@ -1,6 +1,7 @@
 services:
     web:
         container_name: tv_web
+        restart: unless-stopped
         build:
             context: ./docker/8.4-alpine
             dockerfile: Dockerfile
@@ -25,6 +26,7 @@ services:
             - app_search
     queue:
         container_name: tv_queue
+        restart: unless-stopped
         build:
             context: ./docker/8.4-alpine
             dockerfile: Dockerfile
@@ -51,6 +53,7 @@ services:
             - app_search
     schedule:
         container_name: tv_schedule
+        restart: unless-stopped
         build:
             context: ./docker/8.4-alpine
             dockerfile: Dockerfile
