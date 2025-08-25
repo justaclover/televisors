@@ -20,6 +20,7 @@ services:
         volumes:
             - '.:/app/tv'
         networks:
+            - app_database
             - app_proxy
             - app_search
     queue:
@@ -46,6 +47,7 @@ services:
         volumes:
             - '.:/app/tv'
         networks:
+            - app_database
             - app_search
     schedule:
         container_name: tv_schedule
@@ -71,9 +73,12 @@ services:
         volumes:
             - '.:/app/tv'
         networks:
+            - app_database
             - app_search
 networks:
     app_proxy:
+        external: true  # Используем существующую сеть
+    app_database:
         external: true  # Используем существующую сеть
     app_search:
         external: true  # Используем существующую сеть
