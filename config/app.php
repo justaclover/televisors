@@ -14,6 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'heartbeat_link' => env('HEARTBEAT_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------
