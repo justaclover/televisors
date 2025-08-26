@@ -9,12 +9,8 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::call(function () {
     $url = config('app.heartbeat_link');
-    if ($url) {
-        try {
-            $response = Http::get($url);
-            $this->info('Heartbeat sent to ' . $url . ': ' . $response->status());
-        } catch (\Exception $e) {
-            $this->error('Failed to send heartbeat to ' . $url . ': ' . $e->getMessage());
-        }
+    $response = Http::get($url);
+    if (!$response->ok()) {
+        throw new Exception($response->getStatusCode());
     }
 })->everyTwoMinutes();
