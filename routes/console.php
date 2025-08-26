@@ -13,7 +13,7 @@ Schedule::call(function () {
     if (!$response->json('ok') != true) {
         throw new Exception($response->json('msg'));
     }
-})->everyTwoMinutes();
+})->everyMinute();
 
 Artisan::command('heartbeat:send', function () {
     $url = config('app.heartbeat_link');
