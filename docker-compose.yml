@@ -5,41 +5,27 @@ services:
         image: veneridze/laravel-octane:8.4
         command: '/usr/bin/php84 /app/tv/artisan octane:start --server=roadrunner --rpc-port=6001 --host=0.0.0.0 --port=80 --workers=20'
         environment:
-            SUPERVISOR_PHP_USER: sail
-            # XDG_CONFIG_HOME: /var/www/html/config
-            # XDG_DATA_HOME: /var/www/html
-            WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-            IGNITION_LOCAL_SITES_PATH: '${PWD}'
         volumes:
             - '.:/app/tv'
         networks:
-            - app_database
-            - app_proxy
-            - app_search
+            - database
+            - web
+            - search
     queue:
         container_name: tv_queue
         image: veneridze/laravel-octane:8.4
         # network_mode: "service:web"
         command: ["/bin/bash", "-c", "cd /app/tv && /usr/bin/php84 -d variables_order=EGPCS artisan queue:work"]
         environment:
-            SUPERVISOR_PHP_USER: sail
-            # XDG_CONFIG_HOME: /var/www/html/config
-            # XDG_DATA_HOME: /var/www/html
-            WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-            IGNITION_LOCAL_SITES_PATH: '${PWD}'
         depends_on:
             - web
         volumes:
             - '.:/app/tv'
         networks:
-            - app_database
-            - app_search
+            - database
+            - search
     schedule:
         container_name: tv_schedule
         restart: unless-stopped
@@ -47,25 +33,18 @@ services:
         # network_mode: "service:web"
         command: ["/bin/bash", "-c", "cd /app/tv && /usr/bin/php84 -d variables_order=EGPCS artisan schedule:work"]
         environment:
-            SUPERVISOR_PHP_USER: sail
-            # XDG_CONFIG_HOME: /var/www/html/config
-            # XDG_DATA_HOME: /var/www/html
-            WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-            IGNITION_LOCAL_SITES_PATH: '${PWD}'
         depends_on:
             - web
         volumes:
             - '.:/app/tv'
         networks:
-            - app_database
-            - app_search
+            - database
+            - search
 networks:
-    app_proxy:
+    web:
         external: true  # Используем существующую сеть
-    app_database:
+    database:
         external: true  # Используем существующую сеть
-    app_search:
+    search:
         external: true  # Используем существующую сеть

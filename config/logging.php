@@ -52,6 +52,20 @@ return [
 
     'channels' => [
 
+        'openobserve' => [
+            'driver' => 'monolog',
+            'level' => env('LOG_LEVEL', 'debug'),
+            'handler' => Veneridze\LaravelOpenobserveLogs\Handler\OpenObserveHandler::class,
+            'handler_with' => [
+                'url' => env('OPENOBSERVE_URL'),
+                'username' => env('OPENOBSERVE_USERNAME'),
+                'organization' => env('OPENOBSERVE_ORGANIZATION'),
+                'stream' => env('OPENOBSERVE_STREAM'),
+                'password' => env('OPENOBSERVE_PASSWORD'),
+            ],
+            'processors' => [PsrLogMessageProcessor::class],
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', env('LOG_STACK', 'single')),
@@ -89,7 +103,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
