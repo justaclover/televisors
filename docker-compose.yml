@@ -11,40 +11,40 @@ services:
         networks:
             - database
             - web
-            - search
-    queue:
-        container_name: tv_queue
-        image: veneridze/laravel-octane:8.4
-        # network_mode: "service:web"
-        command: ["/bin/bash", "-c", "cd /app/tv && /usr/bin/php84 -d variables_order=EGPCS artisan queue:work"]
-        environment:
-            LARAVEL_SAIL: 1
-        depends_on:
-            - web
-        volumes:
-            - '.:/app/tv'
-        networks:
-            - database
-            - search
-    schedule:
-        container_name: tv_schedule
-        restart: unless-stopped
-        image: veneridze/laravel-octane:8.4
-        # network_mode: "service:web"
-        command: ["/bin/bash", "-c", "cd /app/tv && /usr/bin/php84 -d variables_order=EGPCS artisan schedule:work"]
-        environment:
-            LARAVEL_SAIL: 1
-        depends_on:
-            - web
-        volumes:
-            - '.:/app/tv'
-        networks:
-            - database
-            - search
+            # - search
+    # queue:
+    #     container_name: tv_queue
+    #     image: veneridze/laravel-octane:8.4
+    #     # network_mode: "service:web"
+    #     command: ["/bin/bash", "-c", "cd /app/tv && /usr/bin/php84 -d variables_order=EGPCS artisan queue:work"]
+    #     environment:
+    #         LARAVEL_SAIL: 1
+    #     depends_on:
+    #         - web
+    #     volumes:
+    #         - '.:/app/tv'
+    #     networks:
+    #         - database
+    #         - search
+    # schedule:
+    #     container_name: tv_schedule
+    #     restart: unless-stopped
+    #     image: veneridze/laravel-octane:8.4
+    #     # network_mode: "service:web"
+    #     command: ["/bin/bash", "-c", "cd /app/tv && /usr/bin/php84 -d variables_order=EGPCS artisan schedule:work"]
+    #     environment:
+    #         LARAVEL_SAIL: 1
+    #     depends_on:
+    #         - web
+    #     volumes:
+    #         - '.:/app/tv'
+    #     networks:
+    #         - database
+    #         - search
 networks:
     web:
         external: true  # Используем существующую сеть
     database:
         external: true  # Используем существующую сеть
-    search:
-        external: true  # Используем существующую сеть
+    # search:
+    #     external: true  # Используем существующую сеть
