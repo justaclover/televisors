@@ -4,6 +4,12 @@ services:
         restart: unless-stopped
         image: veneridze/laravel-octane:8.4
         command: '/usr/bin/php84 /app/tv/artisan octane:start --server=roadrunner --rpc-port=6001 --host=0.0.0.0 --port=80 --workers=20'
+        healthcheck:
+            test: ["CMD-SHELL", "/usr/bin/php84 /app/tv/artisan octane:status --no-ansi | grep -q 'Octane server is running' && exit 0 || exit 1"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 10s
         environment:
             LARAVEL_SAIL: 1
         volumes:
